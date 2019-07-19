@@ -1,0 +1,55 @@
+.ipad-dark-grey {
+    -fx-background-color: 
+        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),
+        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),
+        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
+    -fx-background-insets: 0,1,4,5,6;
+    -fx-background-radius: 9,8,5,4,3;
+    -fx-font-family: "Srisakdi";
+    -fx-font-size: 11pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}
+.ipad-dark-grey Text {
+    -fx-effect: dropshadow( one-pass-box , black , 0, 0.0 , 0 , -1 );
+}
+
+.ipad-dark-grey:hover {
+	-fx-text-fill: greenyellow;
+}
+
+.tooltip {
+	-fx-font-family: "Alegreya Sans SC";
+    -fx-font-size: 13pt;
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(255,228,196, 0.5);
+    -fx-text-fill: #403299;
+}
+
+.big-yellow {
+    -fx-background-color: 
+        #ecebe9,
+        rgba(0,0,0,0.05),
+        linear-gradient(#dcca8a, #c7a740),
+        linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%),
+        linear-gradient(#f6ebbe, #e6c34d);
+    -fx-background-insets: 0,9 9 8 9,9,10,11;
+    -fx-background-radius: 50;
+    -fx-padding: 15 30 15 30;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 13pt;
+    -fx-font-weight: bold;
+    -fx-text-fill: #311c09;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);
+}
+
+.big-yellow Text {
+    -fx-effect: dropshadow( one-pass-box , rgba(255,255,255,0.5) , 0, 0.0 , 0 , 1);
+}
+
+.big-yellow:hover {
+    -fx-font-size: 14pt;
+}

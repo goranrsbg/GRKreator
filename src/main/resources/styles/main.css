@@ -1,0 +1,127 @@
+/* Application wide styles */
+.root{
+    -icons-color: black;
+}
+
+.glyph-icon{
+    -fx-text-fill: -icons-color;
+    -fx-fill: -icons-color;
+    -glyph-size: 13.0pt;
+}
+
+.plus-icon {
+	-glyph-name: "PLUS";
+}
+
+.edit-icon {
+	-glyph-name: "EDIT";
+}
+
+.search-icon {
+	-glyph-name: "SEARCH";
+}
+
+.orange-buyer {
+    -fx-background-color: 
+        linear-gradient(#ffd65b, #e68400),
+        linear-gradient(#ffef84, #f2ba44),
+        linear-gradient(#ffea6a, #efaa22),
+        linear-gradient(#ffe657 0.0%, #f8c202 50.0%, #eea10b 100.0%),
+        linear-gradient(from 0.0% 0.0% to 15.0% 50.0%, rgba(255.0,255.0,255.0,0.9), rgba(255.0,255.0,255.0,0.0));
+    -fx-background-radius: 30.0;
+    -fx-background-insets: 0.0,1.0,2.0,3.0,0.0;
+}
+.orange-buyer:hover {
+	-fx-background-color:
+        linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+}
+
+.shiny-orange {
+    -fx-background-color: 
+        linear-gradient(#ffd65b, #e68400),
+        linear-gradient(#ffef84, #f2ba44),
+        linear-gradient(#ffea6a, #efaa22),
+        linear-gradient(#ffe657 0.0%, #f8c202 50.0%, #eea10b 100.0%),
+        linear-gradient(from 0.0% 0.0% to 15.0% 50.0%, rgba(255.0,255.0,255.0,0.9), rgba(255.0,255.0,255.0,0.0));
+    -fx-background-radius: 30.0;
+    -fx-text-fill: black;
+    -fx-font-weight: normal;
+    -fx-font-size: 13.0pt;
+}
+
+.shiny-orange:hover {
+	-fx-background-color:
+        linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+}
+
+.firm-label {
+	-fx-font-family: "Srisakdi";
+	-fx-font-size: 23.0pt;
+	-fx-font-weight: bold;
+}
+
+.jfx-button {
+    -jfx-disable-visual-focus: true;
+}
+
+.tooltip {
+	-fx-font-family: "Alegreya Sans SC";
+    -fx-font-size: 13pt;
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(255,228,196, 0.5);
+    -fx-text-fill: #403299;
+}
+
+.searchTextField {
+	-fx-font-family: "ROBOTO";
+	-fx-font-size: 13pt;
+}
+
+.searchListBox {
+	-fx-font-family: "ROBOTO";
+	-fx-font-size: 13pt;
+}
+
+.title {
+	-fx-font-family: "ROBOTO";
+	-fx-font-size: 17pt;
+}
+.table {
+	-fx-font-family: "ROBOTO";
+	-fx-font-size: 11pt;
+}
+.details {
+	-fx-font-family: "ROBOTO";
+	-fx-font-size: 13pt;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: black;
+    -fx-font-family: "ROBOTO";
+	-fx-font-size: 11pt;
+}
+.table-view .text-field{
+    -fx-font-family: "ROBOTO";
+	-fx-font-size: 11pt;
+	-fx-padding: 1;
+	-fx-border-color: white;
+	-fx-background-color: transparent;
+	-fx-border-width: 0 0 0 0;
+	-fx-border-radius: 0;
+}
+.notnumber-align {
+	-fx-alignment: center-left;
+}
+.number-align{
+	-fx-alignment: center-right;
+}
+.center-align{
+	-fx-alignment: center;
+}
+.search-list-view{
+	
+}
+
+
