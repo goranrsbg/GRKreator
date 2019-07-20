@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
 import goran.rs.bg.grkreator.DB;
+import goran.rs.bg.grkreator.NumberToWordsConverter;
 import goran.rs.bg.grkreator.format.FirmListFormatCell;
 import goran.rs.bg.grkreator.itemtable.ItemTable;
 import goran.rs.bg.grkreator.model.Document;
@@ -23,10 +24,15 @@ import goran.rs.bg.grkreator.model.Firm;
 import goran.rs.bg.grkreator.model.Item;
 import goran.rs.bg.grkreator.thread.SearchFirmsService;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -112,7 +118,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private JFXDatePicker recivingDatePicker;
-	
+
 	@FXML
 	private TableView<ItemTable> itemsTableView;
 
@@ -145,6 +151,23 @@ public class MainController implements Initializable {
 
 	@FXML
 	private ListView<Item> searchItemListView;
+
+	@FXML
+	private Label labelSemiPrice;
+
+	@FXML
+	private Label labelPdvNumber;
+
+	@FXML
+	private Label labelTotalNumber;
+
+	@FXML
+	private Label labelNumberWords;
+
+	private NumberBinding semiPrice;
+	private NumberBinding pdvPrice;
+	private NumberBinding totalPrice;
+	private StringProperty totalToWords;
 
 	private ObservableList<ItemTable> tableItems;
 	private ObservableList<Item> searchListItems;
@@ -219,6 +242,7 @@ public class MainController implements Initializable {
 			public String toString(LocalDate object) {
 				return object == null ? null : object.format(dateTimeFormatter);
 			}
+
 			@Override
 			public LocalDate fromString(String string) {
 				return (string == null || string.trim().isEmpty()) ? null : LocalDate.parse(string, dateTimeFormatter);
@@ -235,15 +259,17 @@ public class MainController implements Initializable {
 		searchItemListView.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if(!newValue) {
+				if (!newValue) {
 					searchItemListView.setVisible(false);
 				}
 			}
 		});
+		initSums();
 		initTable();
 	}
 
 	private void initTable() {
+		initTotalSums();
 		tableItems = FXCollections.observableArrayList();
 		itemsTableView.setItems(tableItems);
 		rbCol.setCellValueFactory(new PropertyValueFactory<>("rowNo"));
@@ -267,10 +293,11 @@ public class MainController implements Initializable {
 							{
 								super.bind(quantityProperty);
 							}
+
 							@Override
 							protected String computeValue() {
 								String value = null;
-								if(quantityProperty.get() == Math.floor(quantityProperty.get())) {
+								if (quantityProperty.get() == Math.floor(quantityProperty.get())) {
 									value = String.valueOf((long) quantityProperty.get());
 								} else {
 									value = String.format("%,.2f", quantityProperty.get());
@@ -318,7 +345,8 @@ public class MainController implements Initializable {
 					protected void updateItem(Item item, boolean empty) {
 						super.updateItem(item, empty);
 						if (item != null) {
-							setText(String.format("%s (%.2f din.)[%d%%]",item.getName(), item.getPrice(), item.getPdv()));
+							setText(String.format("%s (%.2f din.)[%d%%]", item.getName(), item.getPrice(),
+									item.getPdv()));
 						} else {
 							setText("");
 						}
@@ -327,6 +355,37 @@ public class MainController implements Initializable {
 				return cell;
 			}
 		});
+	}
+
+	private void initSums() {
+		initTotalSums();
+		totalToWords = new SimpleStringProperty("");
+		totalToWords.bind(new StringBinding() {
+			{
+				super.bind(totalPrice);
+			}
+
+			@Override
+			protected String computeValue() {
+				String convert = "";
+				try {
+					convert = NumberToWordsConverter.convert(totalPrice.doubleValue());
+				} catch (Exception e) {
+					convert = e.getMessage();
+				}
+				return convert;
+			}
+		});
+		bindSumLabels();
+		labelNumberWords.textProperty().bind(totalToWords);
+
+		// TODO Sum bindings, not here but at adding and removing items table rows.
+	}
+	
+	private void initTotalSums() {
+		semiPrice = Bindings.add(new SimpleDoubleProperty(0d), new SimpleDoubleProperty(0d));
+		pdvPrice = Bindings.add(new SimpleDoubleProperty(0d), new SimpleDoubleProperty(0d));
+		totalPrice = Bindings.add(new SimpleDoubleProperty(0d), new SimpleDoubleProperty(0d));
 	}
 
 	/**
@@ -368,7 +427,7 @@ public class MainController implements Initializable {
 	@FXML
 	void onChangeBuyerButtonAction(ActionEvent event) {
 		if (buyerFirm != null) {
-			showDetailsDialog(buyerLabel.getText(),firmFxml, buyerFirm);
+			showDetailsDialog(buyerLabel.getText(), firmFxml, buyerFirm);
 			merge(buyerFirm);
 			showByerData();
 		}
@@ -429,29 +488,27 @@ public class MainController implements Initializable {
 				showDetailsDialog(itemTitle, itemFxml, item);
 				selectedItem.refreshItem();
 				if (item.isValid()) {
-					updateRowNoValues();
 					editQuantity(row);
 				}
 			} else if (foundItems.size() == 1) {
 				selectedItem.setItem(foundItems.get(0));
-				updateRowNoValues();
 				editQuantity(row);
 			} else {
-				for(Item i : foundItems) {
+				for (Item i : foundItems) {
 					System.err.println(i);
 				}
 				this.selectedItem = selectedItem;
 				this.row = row;
 				searchListItems.addAll(foundItems);
-				
+
 				double topAnchorTable = itemsTableView.localToScene(itemsTableView.getBoundsInLocal()).getMinY();
 				double leftMargin = rbCol.getWidth() + nameCol.getWidth();
 				double topMargin = topAnchorTable + (row + 1) * 26d - 27.5;
 				AnchorPane.setTopAnchor(searchItemListView, topMargin);
 				AnchorPane.setLeftAnchor(searchItemListView, leftMargin);
 				searchItemListView.setVisible(true);
-				
-				Platform.runLater(()-> {
+
+				Platform.runLater(() -> {
 					searchItemListView.requestFocus();
 				});
 			}
@@ -470,6 +527,7 @@ public class MainController implements Initializable {
 			ItemTable lastItemTable = tableItems.get(tableItems.size() - 1);
 			if (value > 0d && lastItemTable.getItem().isValid() && lastItemTable.getQuantity() > 0d) {
 				tableAddNewEmptyRow();
+				updateRowNoValues();
 			}
 		} catch (Exception e) {
 			itemsTableView.refresh();
@@ -480,7 +538,7 @@ public class MainController implements Initializable {
 	void onSearchItemListViewKeyPressed(KeyEvent event) {
 		if (event.getCode() == KeyCode.ESCAPE) {
 			searchItemListView.setVisible(false);
-		} else if(event.getCode() == KeyCode.ENTER) {
+		} else if (event.getCode() == KeyCode.ENTER) {
 			selectedItem.setItem(searchItemListView.getSelectionModel().getSelectedItem());
 			goEditNextRow();
 		}
@@ -493,37 +551,45 @@ public class MainController implements Initializable {
 			goEditNextRow();
 		}
 	}
-	
+
 	@FXML
-    void onAddOrUpdateItemButtonAction(ActionEvent event) {
+	void onAddOrUpdateItemButtonAction(ActionEvent event) {
 		ItemTable itemTable = itemsTableView.getSelectionModel().getSelectedItem();
 		Item item = null;
-		if(itemTable == null) {
+		if (itemTable == null) {
 			item = tableItems.get(tableItems.size() - 1).getItem();
 		} else {
 			item = itemTable.getItem();
 		}
 		showDetailsDialog(itemTitle, itemFxml, item);
-		if(itemTable != null) {
+		if (itemTable != null) {
 			itemTable.refreshItem();
 		}
-    }
-	
+	}
+
 	@FXML
-    void onRemoveRowButtonAction(ActionEvent event) {
+	void onRemoveRowButtonAction(ActionEvent event) {
 		ItemTable itemTable = itemsTableView.getSelectionModel().getSelectedItem();
-		if(itemTable != null && itemTable.getItem().isValid() && tableItems.size() > 1) {
+		if (itemTable != null && itemTable.getItem().isValid() && tableItems.size() > 1) {
 			tableItems.remove(itemTable);
+			updateSumBindings();
 			updateRowNoValues();
 		}
 	}
-	
+
+	private void updateSumBindings() {
+		initTotalSums();
+		for(ItemTable item: tableItems) {
+			addTotalSumValue(item);
+		}
+	}
+
 	private void goEditNextRow() {
 		updateRowNoValues();
 		editQuantity(row);
 		searchItemListHide();
 	}
-	
+
 	private void editQuantity(int row) {
 		Platform.runLater(() -> {
 			itemsTableView.edit(row, qtyCol);
@@ -672,8 +738,23 @@ public class MainController implements Initializable {
 	 * Adds new empty row to the items table view.
 	 */
 	private void tableAddNewEmptyRow() {
-		tableItems.add(new ItemTable(new Item("", "kom", 0d, 0)));
+		ItemTable item = new ItemTable(new Item("", "kom", 0d, 0));
+		tableItems.add(item);
+		addTotalSumValue(item);
 		editName(tableItems.size() - 1);
+	}
+	
+	private void addTotalSumValue(ItemTable item) {
+		semiPrice = Bindings.add(semiPrice, item.semiPriceProperty());
+		pdvPrice = Bindings.add(pdvPrice, item.pdvPriceProperty());
+		totalPrice = Bindings.add(totalPrice, item.totalPriceProperty());
+		bindSumLabels();
+	}
+	
+	private void bindSumLabels() {
+		labelSemiPrice.textProperty().bind(semiPrice.asString("%,.2f din."));
+		labelPdvNumber.textProperty().bind(pdvPrice.asString("%,.2f din."));
+		labelTotalNumber.textProperty().bind(totalPrice.asString("%,.2f din."));
 	}
 
 	private Document findDocumenDetails() {
@@ -693,18 +774,17 @@ public class MainController implements Initializable {
 	}
 
 	private void displayDocumentDetails(Document document) {
-		labelAccoundNumber
-				.setText(String.format("Rb: %05d/%d", document.getValue(), LocalDate.now().getYear() % 100));
+		labelAccoundNumber.setText(String.format("Rb: %05d/%d", document.getValue(), LocalDate.now().getYear() % 100));
 		labelTitle.setText(document.getTitle());
 		labelSettlement.setText(document.getSettlement());
 	}
-	
+
 	private void updateRowNoValues() {
-		for (int i = 0; i < tableItems.size(); i++) {
-			tableItems.get(i).setRowNo(i+1);
+		for (int i = 0; i < tableItems.size() - 1; i++) {
+			tableItems.get(i).setRowNo(i + 1);
 		}
 	}
-	
+
 	private void searchItemListHide() {
 		selectedItem = null;
 		searchItemListView.setVisible(false);

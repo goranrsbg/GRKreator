@@ -4,6 +4,7 @@ goran/rs/bg/grkreator/controller/MainController$9.class
 goran/rs/bg/grkreator/DB.class
 goran/rs/bg/grkreator/controller/FirmController.class
 goran/rs/bg/grkreator/controller/DocumentController.class
+goran/rs/bg/grkreator/controller/MainController$11.class
 goran/rs/bg/grkreator/thread/SearchFirmsService$1.class
 goran/rs/bg/grkreator/controller/PutItem.class
 goran/rs/bg/grkreator/controller/MainController$4.class
@@ -13,6 +14,7 @@ goran/rs/bg/grkreator/controller/MainController$8.class
 goran/rs/bg/grkreator/model/Document.class
 goran/rs/bg/grkreator/controller/MainController$1.class
 goran/rs/bg/grkreator/controller/MainController$6.class
+goran/rs/bg/grkreator/NumberToWordsConverter.class
 goran/rs/bg/grkreator/controller/MainController$10.class
 goran/rs/bg/grkreator/itemtable/ItemTable.class
 goran/rs/bg/grkreator/controller/MainController$5.class

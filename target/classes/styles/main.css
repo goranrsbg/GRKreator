@@ -124,4 +124,9 @@
 	
 }
 
+.total-labels-text{
+	-fx-font-family: "ROBOTO";
+	-fx-font-size: 13pt;
+}
+
 
