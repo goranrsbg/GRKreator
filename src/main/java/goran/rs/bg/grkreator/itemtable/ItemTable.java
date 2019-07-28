@@ -1,5 +1,7 @@
 package goran.rs.bg.grkreator.itemtable;
 
+import java.text.DecimalFormat;
+
 import goran.rs.bg.grkreator.model.Item;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -20,6 +22,8 @@ public class ItemTable {
 	private DoubleProperty semiPrice;
 	private DoubleProperty pdvPrice;
 	private DoubleProperty totalPrice;
+	
+	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###,###.##");
 
 	private ItemTable() {
 		rowNo = new SimpleStringProperty();
@@ -129,7 +133,11 @@ public class ItemTable {
 	public double getQuantity() {
 		return quantity.get();
 	}
-
+	
+	public String getQuantityString() {
+		return DECIMAL_FORMAT.format(getQuantity());
+	}
+	
 	public void setQuantity(double quantity) {
 		this.quantity.set(quantity);
 	}
@@ -141,7 +149,7 @@ public class ItemTable {
 	public double getSemiPrice() {
 		return semiPrice.get();
 	}
-
+	
 	public DoubleProperty pdvPriceProperty() {
 		return pdvPrice;
 	}
@@ -157,5 +165,4 @@ public class ItemTable {
 	public double getTotalPrice() {
 		return totalPrice.get();
 	}
-
 }

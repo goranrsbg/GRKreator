@@ -1,0 +1,31 @@
+.root *{
+	-fx-font-family: "Varela Round";
+	-fx-text-fill: black;
+	-fx-background-color: rgba(255,255,255,1);
+}
+
+.pib-first {
+	-fx-border-width: 0 1 1 1;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+}
+
+.pib-rest {
+	-fx-border-width: 0 1 1 0;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+}
+
+.text-mbr {
+	-fx-font-size: 10pt;
+}
+.capition-text{
+	-fx-font-family: "Carrois Gothic SC";
+    -fx-font-size: 13pt;
+}
+.buyer-box {
+	-fx-background-color: rgba(0,0,0,0.1);	
+}
+.title{
+    -fx-font-size: 14pt;
+}

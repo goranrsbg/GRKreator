@@ -21,6 +21,13 @@
 	-glyph-name: "SEARCH";
 }
 
+.print-icon{
+	-glyph-name: "PRINT";
+    -glyph-size: 23.0pt;
+    -icons-color: #0c8701;
+}
+
+
 .orange-buyer {
     -fx-background-color: 
         linear-gradient(#ffd65b, #e68400),
@@ -56,6 +63,24 @@
         radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
 }
 
+.edit-orange {
+    -fx-background-color: 
+        linear-gradient(#ffd65b, #e68400),
+        linear-gradient(#ffef84, #f2ba44),
+        linear-gradient(#ffea6a, #efaa22),
+        linear-gradient(#ffe657 0.0%, #f8c202 50.0%, #eea10b 100.0%),
+        linear-gradient(from 0.0% 0.0% to 15.0% 50.0%, rgba(255.0,255.0,255.0,0.9), rgba(255.0,255.0,255.0,0.0));
+    -fx-background-radius: 5.0;
+    -fx-text-fill: black;
+    -fx-font-weight: normal;
+}
+
+.edit-orange:hover {
+	-fx-background-color:
+        linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+}
+
 .firm-label {
 	-fx-font-family: "Srisakdi";
 	-fx-font-size: 23.0pt;
@@ -67,7 +92,7 @@
 }
 
 .tooltip {
-	-fx-font-family: "Alegreya Sans SC";
+	-fx-font-family: "Carrois Gothic SC";
     -fx-font-size: 13pt;
     -fx-font-weight: bold;
     -fx-background-color: rgba(255,228,196, 0.5);

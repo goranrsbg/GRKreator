@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "T_ITEM")
 @NamedQueries({ @NamedQuery(name = "Item.findAll", query = "select i from Item i"),
-		@NamedQuery(name = "Item.findByName", query = "select i from Item i where ITEM_NAME like :name") })
+		@NamedQuery(name = "Item.findByName", query = "select i from Item i where lower(ITEM_NAME) like :name") })
 public class Item {
 
 	@Id

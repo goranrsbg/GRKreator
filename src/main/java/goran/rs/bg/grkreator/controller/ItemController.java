@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import com.jfoenix.controls.JFXTextField;
 
 import goran.rs.bg.grkreator.DB;
+import goran.rs.bg.grkreator.etc.PutItem;
 import goran.rs.bg.grkreator.model.Item;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

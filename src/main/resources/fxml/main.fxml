@@ -107,9 +107,9 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="centerAncorPane">
+      <AnchorPane fx:id="centerAncorPane" maxWidth="1.7976931348623157E308">
          <children>
-            <VBox>
+            <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox alignment="CENTER">
                      <children>
@@ -123,6 +123,17 @@
                            <tooltip>
                               <Tooltip text="Ažuriraj detalje računa" />
                            </tooltip>
+                        </JFXButton>
+                        <JFXButton buttonType="RAISED" layoutX="370.0" layoutY="21.0" onAction="#onPrintButtonAction" ripplerFill="#07eb5f" text="" textAlignment="CENTER">
+                           <padding>
+                              <Insets bottom="11.0" left="23.0" right="23.0" top="11.0" />
+                           </padding>
+                           <tooltip>
+                              <Tooltip text="Štampaj račun" />
+                           </tooltip>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="PRINT" size="19.0" styleClass="print-icon" />
+                           </graphic>
                         </JFXButton>
                      </children>
                   </HBox>
@@ -144,10 +155,10 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="108.0" spacing="11.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="11.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <JFXButton buttonType="RAISED" onAction="#onAddOrUpdateItemButtonAction" text="Dodaj/Ažuriraj Artikl" />
-                              <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#onRemoveRowButtonAction" text="Ukloni Red" />
+                              <JFXButton buttonType="RAISED" onAction="#onAddOrUpdateItemButtonAction" styleClass="edit-orange" text="Dodaj/Ažuriraj Artikl" />
+                              <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#onRemoveRowButtonAction" styleClass="edit-orange" text="Ukloni Red" />
                            </children>
                         </HBox>
                         <Label styleClass="details" text="Datum otpremanja:" />

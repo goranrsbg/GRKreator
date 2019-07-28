@@ -16,7 +16,8 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
 import goran.rs.bg.grkreator.DB;
-import goran.rs.bg.grkreator.NumberToWordsConverter;
+import goran.rs.bg.grkreator.NTWC;
+import goran.rs.bg.grkreator.etc.PutItem;
 import goran.rs.bg.grkreator.format.FirmListFormatCell;
 import goran.rs.bg.grkreator.itemtable.ItemTable;
 import goran.rs.bg.grkreator.model.Document;
@@ -31,8 +32,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,6 +40,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.print.PageLayout;
+import javafx.print.PrinterJob;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -63,6 +64,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -167,7 +169,6 @@ public class MainController implements Initializable {
 	private NumberBinding semiPrice;
 	private NumberBinding pdvPrice;
 	private NumberBinding totalPrice;
-	private StringProperty totalToWords;
 
 	private ObservableList<ItemTable> tableItems;
 	private ObservableList<Item> searchListItems;
@@ -199,13 +200,16 @@ public class MainController implements Initializable {
 	private final String[] SEARCH_PROMPT_TEXT = { "Traži po imenu", "Traži po PIB-u", "Traži po ID-u" };
 	private IntegerProperty searchTypeIndex = new SimpleIntegerProperty();;
 	private SearchFirmsService searchFirmsService;
-
+	private DateTimeFormatter dateTimeFormatter;
+	
 	private Firm sellerFirm;
 	private Firm buyerFirm;
+	private Document documentDetails;
 
 	private final String firmFxml = "/fxml/firm.fxml";
 	private final String documentFxml = "/fxml/document.fxml";
 	private final String itemFxml = "/fxml/item.fxml";
+	private final String printFxml = "/fxml/print.fxml";
 	private final String documentTitle = "Detalji računa";
 	private final String itemTitle = "Detalji Robe";
 
@@ -234,9 +238,9 @@ public class MainController implements Initializable {
 				return new FirmListFormatCell();
 			}
 		});
-		displayDocumentDetails(findDocumenDetails());
+		
 		showFirmData(sellerFirmLogoImageView, sellerFirmDataGridPane, sellerFirm);
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", new Locale("sr"));
+		dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.", new Locale("sr"));
 		StringConverter<LocalDate> dateConverter = new StringConverter<LocalDate>() {
 			@Override
 			public String toString(LocalDate object) {
@@ -264,6 +268,8 @@ public class MainController implements Initializable {
 				}
 			}
 		});
+		findDocumenDetails();
+		displayDocumentDetails();
 		initSums();
 		initTable();
 	}
@@ -359,29 +365,9 @@ public class MainController implements Initializable {
 
 	private void initSums() {
 		initTotalSums();
-		totalToWords = new SimpleStringProperty("");
-		totalToWords.bind(new StringBinding() {
-			{
-				super.bind(totalPrice);
-			}
-
-			@Override
-			protected String computeValue() {
-				String convert = "";
-				try {
-					convert = NumberToWordsConverter.convert(totalPrice.doubleValue());
-				} catch (Exception e) {
-					convert = e.getMessage();
-				}
-				return convert;
-			}
-		});
 		bindSumLabels();
-		labelNumberWords.textProperty().bind(totalToWords);
-
-		// TODO Sum bindings, not here but at adding and removing items table rows.
 	}
-	
+
 	private void initTotalSums() {
 		semiPrice = Bindings.add(new SimpleDoubleProperty(0d), new SimpleDoubleProperty(0d));
 		pdvPrice = Bindings.add(new SimpleDoubleProperty(0d), new SimpleDoubleProperty(0d));
@@ -404,9 +390,8 @@ public class MainController implements Initializable {
 
 	@FXML
 	void onCenterButtonAction(ActionEvent event) {
-		Document document = findDocumenDetails();
-		showDetailsDialog(documentTitle, documentFxml, document);
-		displayDocumentDetails(document);
+		showDetailsDialog(documentTitle, documentFxml, documentDetails);
+		displayDocumentDetails();
 	}
 
 	@FXML
@@ -494,9 +479,9 @@ public class MainController implements Initializable {
 				selectedItem.setItem(foundItems.get(0));
 				editQuantity(row);
 			} else {
-				for (Item i : foundItems) {
-					System.err.println(i);
-				}
+//				for (Item i : foundItems) {
+//					System.err.println(i);
+//				}
 				this.selectedItem = selectedItem;
 				this.row = row;
 				searchListItems.addAll(foundItems);
@@ -526,8 +511,8 @@ public class MainController implements Initializable {
 			selectedItem.setQuantity(value);
 			ItemTable lastItemTable = tableItems.get(tableItems.size() - 1);
 			if (value > 0d && lastItemTable.getItem().isValid() && lastItemTable.getQuantity() > 0d) {
-				tableAddNewEmptyRow();
 				updateRowNoValues();
+				tableAddNewEmptyRow();
 			}
 		} catch (Exception e) {
 			itemsTableView.refresh();
@@ -576,16 +561,20 @@ public class MainController implements Initializable {
 			updateRowNoValues();
 		}
 	}
+	
+    @FXML
+    void onPrintButtonAction(ActionEvent event) {
+    	doPrint();
+    }
 
 	private void updateSumBindings() {
 		initTotalSums();
-		for(ItemTable item: tableItems) {
+		for (ItemTable item : tableItems) {
 			addTotalSumValue(item);
 		}
 	}
 
 	private void goEditNextRow() {
-		updateRowNoValues();
 		editQuantity(row);
 		searchItemListHide();
 	}
@@ -605,7 +594,7 @@ public class MainController implements Initializable {
 	private List<Item> findItems(String value) {
 		em.getTransaction().begin();
 		TypedQuery<Item> nQuery = em.createNamedQuery("Item.findByName", Item.class);
-		nQuery.setParameter("name", "%" + value + "%");
+		nQuery.setParameter("name", "%" + value.toLowerCase() + "%");
 		List<Item> itemList = nQuery.getResultList();
 		em.getTransaction().commit();
 		return itemList;
@@ -743,44 +732,58 @@ public class MainController implements Initializable {
 		addTotalSumValue(item);
 		editName(tableItems.size() - 1);
 	}
-	
+
 	private void addTotalSumValue(ItemTable item) {
 		semiPrice = Bindings.add(semiPrice, item.semiPriceProperty());
 		pdvPrice = Bindings.add(pdvPrice, item.pdvPriceProperty());
 		totalPrice = Bindings.add(totalPrice, item.totalPriceProperty());
 		bindSumLabels();
 	}
-	
+
 	private void bindSumLabels() {
 		labelSemiPrice.textProperty().bind(semiPrice.asString("%,.2f din."));
 		labelPdvNumber.textProperty().bind(pdvPrice.asString("%,.2f din."));
 		labelTotalNumber.textProperty().bind(totalPrice.asString("%,.2f din."));
+		labelNumberWords.textProperty().bind(new StringBinding() {
+			{
+				super.bind(totalPrice);
+			}
+
+			@Override
+			protected String computeValue() {
+				String convert = "";
+				try {
+					convert = NTWC.convert(totalPrice.doubleValue());
+				} catch (Exception e) {
+					convert = e.getMessage();
+				}
+				return convert;
+			}
+		});
 	}
 
-	private Document findDocumenDetails() {
-		Document document = null;
+	private void findDocumenDetails() {
 		try {
 			em.getTransaction().begin();
-			document = em.find(Document.class, DOCUMENT_DETAILS_ID);
-			if (document == null) {
-				document = new Document(DOCUMENT_DETAILS_ID, 1, "Račun", "Bez naselja");
-				em.persist(document);
+			documentDetails = em.find(Document.class, DOCUMENT_DETAILS_ID);
+			if (documentDetails == null) {
+				documentDetails = new Document(DOCUMENT_DETAILS_ID, 1, "Račun", "Bez naselja");
+				em.persist(documentDetails);
 			}
 			em.getTransaction().commit();
 		} catch (PersistenceException e) {
 			em.getTransaction().rollback();
 		}
-		return document;
 	}
 
-	private void displayDocumentDetails(Document document) {
-		labelAccoundNumber.setText(String.format("Rb: %05d/%d", document.getValue(), LocalDate.now().getYear() % 100));
-		labelTitle.setText(document.getTitle());
-		labelSettlement.setText(document.getSettlement());
+	private void displayDocumentDetails() {
+		labelAccoundNumber.setText(String.format("Rb: %04d/%d", documentDetails.getValue(), LocalDate.now().getYear() % 100));
+		labelTitle.setText(documentDetails.getTitle());
+		labelSettlement.setText(documentDetails.getSettlement());
 	}
 
 	private void updateRowNoValues() {
-		for (int i = 0; i < tableItems.size() - 1; i++) {
+		for (int i = 0; i < tableItems.size(); i++) {
 			tableItems.get(i).setRowNo(i + 1);
 		}
 	}
@@ -789,6 +792,57 @@ public class MainController implements Initializable {
 		selectedItem = null;
 		searchItemListView.setVisible(false);
 		searchListItems.clear();
+	}
+	
+	private boolean doPrint() {
+		
+		PrinterJob job = PrinterJob.createPrinterJob();
+		if(job == null) {
+			showAlertMessage(AlertType.ERROR, "Štampač nije pronađen.");
+			return false;
+		}
+		job.getJobSettings().copiesProperty().set(3);
+		if(!job.showPrintDialog(window)) {
+			return false;
+		}
+		
+		PageLayout pageLayout = job.getJobSettings().getPageLayout();
+
+		double printableHeight = pageLayout.getPrintableHeight();
+		double printableWidth = pageLayout.getPrintableWidth();
+		
+		Parent root = null;
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			root = loader.<Parent>load(getClass().getResourceAsStream(printFxml));
+			PrintController controller = loader.<PrintController>getController();
+			controller.setSellerFirm(sellerFirm);
+			controller.setBuyerFirm(buyerFirm);
+			controller.setDocumentDetails(documentDetails);
+			controller.setDates(sellingDatePicker.getValue().format(dateTimeFormatter) + " godine", recivingDatePicker.getValue().format(dateTimeFormatter)+ " godine");
+			controller.setTableItems(tableItems);
+			controller.setTotalPrices(labelSemiPrice.getText(), labelPdvNumber.getText(), labelTotalNumber.getText(), labelNumberWords.getText());
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.setResizable(false);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+			showAlertMessage(AlertType.ERROR, e.getMessage());
+			return false;
+		}
+		double width = root.getLayoutBounds().getWidth();
+		double scaleX = printableWidth/width;
+		System.err.println("scaleX: "+ scaleX );
+		System.err.println("printableH: "+ printableHeight );
+		root.getTransforms().add(new Scale(scaleX, scaleX));
+		
+//		if(!job.printPage(root)) {
+//			showAlertMessage(AlertType.ERROR, "Štampanje nije uspelo.");
+//			return false; 
+//		}
+		return job.endJob();
 	}
 
 	private void showAlertMessage(AlertType type, String message) {

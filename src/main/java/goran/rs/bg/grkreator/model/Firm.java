@@ -24,18 +24,18 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import goran.rs.bg.grkreator.controller.MainController;
+import goran.rs.bg.grkreator.etc.FirmDetails;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 @Entity
-@NamedQueries({ 
-	@NamedQuery(name = "Firm.findAll", query = "select f from Firm f"),
-	@NamedQuery(name = "Firm.findByName", query = "select f from Firm f where FIRM_NAME like :name and FIRM_ID <> 1"),
-	@NamedQuery(name = "Firm.findByPib", query = "select f from Firm f where FIRM_PIB like :pib and FIRM_ID <> 1"),
-	@NamedQuery(name = "Firm.findByIdnu", query = "select f from Firm f where FIRM_IDNU like :idnu and FIRM_ID <> 1")})
-@Table(name = "T_FIRM", indexes = { 
-		@Index(name = "ind_pib", columnList = "FIRM_PIB", unique = true),
-		@Index(name = "ind_name", columnList = "FIRM_NAME", unique = false)})
+@NamedQueries({ @NamedQuery(name = "Firm.findAll", query = "select f from Firm f"),
+		@NamedQuery(name = "Firm.findByName", query = "select f from Firm f where FIRM_NAME like :name and FIRM_ID <> 1"),
+		@NamedQuery(name = "Firm.findByPib", query = "select f from Firm f where FIRM_PIB like :pib and FIRM_ID <> 1"),
+		@NamedQuery(name = "Firm.findByIdnu", query = "select f from Firm f where FIRM_IDNU like :idnu and FIRM_ID <> 1") })
+@Table(name = "T_FIRM", indexes = { @Index(name = "ind_pib", columnList = "FIRM_PIB", unique = true),
+		@Index(name = "ind_name", columnList = "FIRM_NAME", unique = false) })
 public class Firm {
 
 	@Id
@@ -228,7 +228,7 @@ public class Firm {
 	public void setDisplayData(String displayData) {
 		this.displayData = displayData;
 	}
-	
+
 	public boolean isFirmValid() {
 		return !pib.equals("bez PIB-a");
 	}
@@ -250,14 +250,14 @@ public class Firm {
 		return image;
 	}
 
-	public void setLogoImage(Image image) {
+	public void setLogoImage(Image image, String formatName) {
 		if (image == null) {
 			setLogo(null);
 		} else {
 			BufferedImage bi = SwingFXUtils.fromFXImage(image, null);
 			ByteArrayOutputStream bs = new ByteArrayOutputStream();
 			try {
-				ImageIO.write(bi, "png", bs);
+				ImageIO.write(bi, formatName, bs);
 				setLogo(bs.toByteArray());
 				bs.close();
 			} catch (IOException e) {
@@ -331,9 +331,10 @@ public class Firm {
 		}
 	}
 	
-	
-	
-	
+	public boolean IsDataForDisplay(FirmDetails firmDetails) {
+		return displayData.charAt(firmDetails.ID) == MainController.SHOW;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -441,5 +442,5 @@ public class Firm {
 				+ ", phoneHome=" + phoneHome + ", fax=" + fax + ", phoneMob=" + phoneMob + ", mail=" + mail + ", site="
 				+ site + ", logo=" + logo + ", displayData=" + displayData + "]";
 	}
-	
+
 }

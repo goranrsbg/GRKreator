@@ -21,10 +21,10 @@ public class GRkretor extends Application {
 		}
 		Font.loadFont(getClass().getResourceAsStream("/fonts/Srisakdi-Regular.ttf"), 11d);
 		Font.loadFont(getClass().getResourceAsStream("/fonts/Srisakdi-Bold.ttf"), 11d);
-		Font.loadFont(getClass().getResourceAsStream("/fonts/AlegreyaSansSC-Regular.ttf"), 11d);
-		Font.loadFont(getClass().getResourceAsStream("/fonts/AlegreyaSansSC-Bold.ttf"), 11d);
 		Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Regular.ttf"), 11d);
 		Font.loadFont(getClass().getResourceAsStream("/fonts/Roboto-Bold.ttf"), 11d);
+		Font.loadFont(getClass().getResourceAsStream("/fonts/VarelaRound-Regular.ttf"), 11d);
+		Font.loadFont(getClass().getResourceAsStream("/fonts/CarroisGothicSC-Regular.ttf"), 11d);
 	}
 	
 	@Override

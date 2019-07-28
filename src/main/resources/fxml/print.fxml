@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="842.4" maxWidth="597.6" minHeight="842.4" minWidth="597.6" prefHeight="842.4" prefWidth="597.6" style="-fx-background-color: rgba(255,255,255,1);" stylesheets="@/styles/print.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="goran.rs.bg.grkreator.controller.PrintController">
+	<children>
+		<VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<HBox maxWidth="1.7976931348623157E308">
+					<children>
+						<ImageView fx:id="logoImageView" fitWidth="151.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
+					</children>
+					<VBox.margin>
+						<Insets />
+					</VBox.margin>
+				</HBox>
+				<AnchorPane>
+					<children>
+						<VBox fx:id="selllerBoxDetails" layoutX="0.0380859375" spacing="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<children>
+								<HBox fx:id="sellerNameBox" alignment="CENTER_LEFT">
+									<children>
+										<Text fx:id="sellerName" styleClass="capition-text" text="Firm Name" />
+									</children>
+								</HBox>
+								<HBox fx:id="sellerAdressBox" alignment="CENTER_LEFT">
+									<children>
+										<Text fx:id="sellerAddress" text="Firm Address" />
+									</children>
+								</HBox>
+								<HBox fx:id="sellerEmailBox" alignment="CENTER_LEFT">
+									<children>
+										<Text fx:id="sellerEmail" text="Firm Email" />
+									</children>
+								</HBox>
+								<HBox fx:id="sellerWebAddressBox" alignment="CENTER_LEFT">
+									<children>
+										<Text fx:id="sellerWebAddress" text="Firm Web Address" />
+									</children>
+								</HBox>
+								<HBox fx:id="sellerPhoneBox" alignment="CENTER_LEFT">
+									<children>
+										<HBox prefWidth="51.0">
+											<children>
+												<Text fx:id="sellerTelNameText" text="Tel." />
+											</children>
+											<HBox.margin>
+												<Insets />
+											</HBox.margin>
+										</HBox>
+										<HBox>
+											<children>
+												<Text fx:id="sellerPhone" text="Firm Telephone" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox fx:id="sellerFaxBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="74.0">
+									<children>
+										<HBox prefWidth="51.0">
+											<HBox.margin>
+												<Insets />
+											</HBox.margin>
+											<children>
+												<Text text="Fax." />
+											</children>
+										</HBox>
+										<HBox>
+											<children>
+												<Text fx:id="sellerFax" text="Firm Fax" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox fx:id="sellerMobBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="90.0">
+									<children>
+										<HBox prefWidth="51.0">
+											<HBox.margin>
+												<Insets />
+											</HBox.margin>
+											<children>
+												<Text text="Mob." />
+											</children>
+										</HBox>
+										<HBox>
+											<children>
+												<Text fx:id="sellerMob" text="Firm Mob" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox fx:id="sellerPIBbox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
+									<children>
+										<HBox prefWidth="51.0">
+											<HBox.margin>
+												<Insets />
+											</HBox.margin>
+											<children>
+												<Text text="PIB" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" minHeight="17.0" prefWidth="17.0" styleClass="pib-first">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="78.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="95.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="112.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="129.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="146.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="163.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="180.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
+									<children>
+										<HBox prefWidth="51.0">
+											<HBox.margin>
+												<Insets />
+											</HBox.margin>
+											<children>
+												<Text text="MBR" />
+											</children>
+										</HBox>
+										<Text fx:id="sellerIDNumber" strokeType="OUTSIDE" strokeWidth="0.0" text="000000000">
+											<HBox.margin>
+												<Insets />
+											</HBox.margin>
+										</Text>
+									</children>
+								</HBox>
+								<HBox alignment="CENTER_LEFT" fillHeight="false" spacing="11.0" VBox.vgrow="ALWAYS">
+									<children>
+										<Text styleClass="chaccount" text="Tekući račun" />
+										<Text fx:id="sellerChechingAccount" text="000-0000000000000-00" underline="true" />
+									</children>
+								</HBox>
+							</children>
+						</VBox>
+						<VBox fx:id="buyerBoxDetails" layoutX="258.0380859375" spacing="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<children>
+								<HBox alignment="CENTER_LEFT" styleClass="buyer-box">
+									<children>
+										<Text styleClass="capition-text" text="Kupac" />
+									</children>
+								</HBox>
+								<HBox fx:id="buyerNameBox" alignment="CENTER_LEFT">
+									<children>
+										<Text fx:id="buyerName" styleClass="capition-text" text="Firm Name" />
+									</children>
+								</HBox>
+								<HBox fx:id="buyerAddressBox" alignment="CENTER_LEFT">
+									<children>
+										<Text fx:id="buyerAddress" text="Firm Address" />
+									</children>
+								</HBox>
+								<HBox fx:id="buyerPhoneBox" alignment="CENTER_LEFT">
+									<children>
+										<HBox prefWidth="51.0">
+											<children>
+												<Text fx:id="buyerTelNameText" text="Tel." />
+											</children>
+										</HBox>
+										<HBox>
+											<children>
+												<Text fx:id="buyerPhone" text="Firm Telephone" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox fx:id="buyerMobBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="90.0">
+									<children>
+										<HBox prefWidth="51.0">
+											<children>
+												<Text text="Mob." />
+											</children>
+										</HBox>
+										<HBox>
+											<children>
+												<Text fx:id="buyerMob" text="Firm Mob" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox fx:id="buyerPIBbox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
+									<children>
+										<HBox prefWidth="51.0">
+											<HBox.margin>
+												<Insets />
+											</HBox.margin>
+											<children>
+												<Text text="PIB" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" prefHeight="17.0" prefWidth="17.0" styleClass="pib-first">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="78.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="95.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="61.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="78.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="95.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="112.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+										<HBox alignment="CENTER" layoutX="180.0" layoutY="10.0" prefHeight="17.0" prefWidth="17.0" styleClass="pib-rest">
+											<children>
+												<Text text="0" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
+									<children>
+										<HBox prefWidth="51.0">
+											<children>
+												<Text text="MBR" />
+											</children>
+										</HBox>
+										<HBox>
+											<children>
+												<Text fx:id="buyerIDNumber" strokeType="OUTSIDE" strokeWidth="0.0" text="000000000" />
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+								<HBox alignment="CENTER_LEFT" fillHeight="false" spacing="11.0" HBox.hgrow="NEVER" VBox.vgrow="NEVER">
+									<children>
+										<Text styleClass="chaccount" text="Tekući račun" />
+										<Text fx:id="buyerChechingAccount" text="000-0000000000000-00" underline="true" />
+									</children>
+								</HBox>
+							</children>
+						</VBox>
+					</children>
+				</AnchorPane>
+				<HBox alignment="CENTER" spacing="11.0">
+					<children>
+						<Text fx:id="documentTitle" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Naslov" />
+						<Text fx:id="ducumentNumber" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="br." />
+					</children>
+					<VBox.margin>
+						<Insets bottom="17.0" top="17.0" />
+					</VBox.margin>
+				</HBox>
+				<HBox alignment="CENTER_LEFT" spacing="11.0">
+					<children>
+						<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mesto i datum izdavanja računa:" />
+						<Text fx:id="sellingPlaceDate" strokeType="OUTSIDE" strokeWidth="0.0" text="mesto i datum" />
+					</children>
+					<VBox.margin>
+						<Insets bottom="1.0" />
+					</VBox.margin>
+				</HBox>
+				<HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="218.0" spacing="11.0">
+					<children>
+						<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Datum prometa dobara i usluga:" />
+						<Text fx:id="recivingDate" strokeType="OUTSIDE" strokeWidth="0.0" text="mesto i datum" />
+					</children>
+				</HBox>
+				<HBox>
+					<VBox.margin>
+						<Insets top="11.0" />
+					</VBox.margin>
+               <children>
+                  <GridPane fx:id="gridTable" alignment="CENTER" maxWidth="1.7976931348623157E308" vgap="3.0" HBox.hgrow="ALWAYS">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="17.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="17.0" valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+               </children>
+				</HBox>
+			</children>
+		</VBox>
+	</children>
+</AnchorPane>

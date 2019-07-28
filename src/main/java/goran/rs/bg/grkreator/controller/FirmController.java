@@ -11,6 +11,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import goran.rs.bg.grkreator.etc.PutItem;
 import goran.rs.bg.grkreator.model.Firm;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -100,6 +101,7 @@ public class FirmController implements Initializable, PutItem {
 	private JFXCheckBox logoCheckBox;
 
 	private Image noLogoImage;
+	private String imageFormat;
 	private boolean isLogoChosen;
 	private boolean isLogoDeleted;
 	private ArrayList<JFXCheckBox> checkBoxesList;
@@ -109,6 +111,7 @@ public class FirmController implements Initializable, PutItem {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		imageFormat = null;
 		initCheckBoxesList();
 		addValidators();
 		noLogoImage = new Image(getClass().getResourceAsStream("/images/logo.png"));
@@ -183,6 +186,8 @@ public class FirmController implements Initializable, PutItem {
 		if (logoFile != null) {
 			Image image = new Image(logoFile.toURI().toString());
 			logoImageView.setImage(image);
+			imageFormat = logoFile.getName().substring(logoFile.getName().lastIndexOf('.') + 1);
+			System.err.println("FORMAT: " + imageFormat);
 			isLogoChosen = true;
 			isLogoDeleted = false;
 		}
@@ -254,6 +259,7 @@ public class FirmController implements Initializable, PutItem {
 
 	private void setDefaultLogoImage() {
 		logoImageView.setImage(noLogoImage);
+		imageFormat = null;
 	}
 
 	private void updateFirmData() {
@@ -271,9 +277,9 @@ public class FirmController implements Initializable, PutItem {
 			theFirm.setSite(getText(siteField));
 			theFirm.setDisplayData(writeShown());
 			if (isLogoChosen) {
-				theFirm.setLogoImage(logoImageView.getImage());
+				theFirm.setLogoImage(logoImageView.getImage(), imageFormat);
 			} else if (isLogoDeleted) {
-				theFirm.setLogoImage(null);
+				theFirm.setLogoImage(null, null);
 			}
 		}
 	}
