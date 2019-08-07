@@ -3,6 +3,7 @@ package goran.rs.bg.grkreator.itemtable;
 import java.text.DecimalFormat;
 
 import goran.rs.bg.grkreator.model.Item;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -22,7 +23,7 @@ public class ItemTable {
 	private DoubleProperty semiPrice;
 	private DoubleProperty pdvPrice;
 	private DoubleProperty totalPrice;
-	
+
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###,###.##");
 
 	private ItemTable() {
@@ -30,16 +31,23 @@ public class ItemTable {
 		name = new SimpleStringProperty();
 		unitOfMeasure = new SimpleStringProperty();
 		price = new SimpleDoubleProperty();
-		price.asString();
 		pdv = new SimpleIntegerProperty();
 		quantity = new SimpleDoubleProperty();
 		semiPrice = new SimpleDoubleProperty();
 		pdvPrice = new SimpleDoubleProperty();
 		totalPrice = new SimpleDoubleProperty();
 		// calculations
-		semiPrice.bind(price.multiply(quantity));
-		pdvPrice.bind(semiPrice.multiply(pdv).divide(100d));
-		totalPrice.bind(semiPrice.add(pdvPrice));
+		semiPrice.bind(quantity.multiply(new DoubleBinding() {
+			{
+				super.bind(price, pdv);
+			}
+			@Override
+			protected double computeValue() {
+				return getRealPrice();
+			}
+		}));
+		totalPrice.bind(price.multiply(quantity));
+		pdvPrice.bind(totalPrice.subtract(semiPrice));
 	}
 
 	public ItemTable(Item item) {
@@ -52,7 +60,7 @@ public class ItemTable {
 		this.item = item;
 		refreshItem();
 	}
-	
+
 	public void refreshItem() {
 		name.set(item.getName());
 		unitOfMeasure.set(item.getUnitOfMeasure());
@@ -71,7 +79,7 @@ public class ItemTable {
 	public String getRowNo() {
 		return rowNo.get();
 	}
-	
+
 	public void setRowNo(int value) {
 		rowNo.set(String.format("%02d.", value));
 	}
@@ -109,6 +117,10 @@ public class ItemTable {
 		return price.get();
 	}
 
+	public double getRealPrice() {
+		return Double.parseDouble(String.format("%.2f", price.get()/ (1d + pdv.get() / 100d)));
+	}
+
 	public void setPrice(double price) {
 		this.price.set(price);
 		;
@@ -133,11 +145,11 @@ public class ItemTable {
 	public double getQuantity() {
 		return quantity.get();
 	}
-	
+
 	public String getQuantityString() {
 		return DECIMAL_FORMAT.format(getQuantity());
 	}
-	
+
 	public void setQuantity(double quantity) {
 		this.quantity.set(quantity);
 	}
@@ -149,7 +161,7 @@ public class ItemTable {
 	public double getSemiPrice() {
 		return semiPrice.get();
 	}
-	
+
 	public DoubleProperty pdvPriceProperty() {
 		return pdvPrice;
 	}

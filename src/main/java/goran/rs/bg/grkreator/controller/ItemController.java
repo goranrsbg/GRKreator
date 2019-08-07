@@ -6,6 +6,7 @@ import java.util.function.UnaryOperator;
 
 import javax.persistence.EntityManager;
 
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
 import goran.rs.bg.grkreator.DB;
@@ -22,7 +23,7 @@ import javafx.stage.Window;
 public class ItemController implements Initializable, PutItem {
 
 	@FXML
-	private JFXTextField nameTextField;
+	private JFXTextArea nameTextArea;
 
 	@FXML
 	private JFXTextField unitOfMeasureTextField;
@@ -40,7 +41,7 @@ public class ItemController implements Initializable, PutItem {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		Platform.runLater(()->{
-			window = nameTextField.getScene().getWindow();
+			window = nameTextArea.getScene().getWindow();
 		});
 		UnaryOperator<Change> filterDouble = change -> {
 			if(change.getText().matches("^\\d*\\.?\\d*")) {
@@ -88,18 +89,18 @@ public class ItemController implements Initializable, PutItem {
 	}
 
 	private void displayItem() {
-		nameTextField.setText(item.getName());
+		nameTextArea.setText(item.getName());
 		unitOfMeasureTextField.setText(item.getUnitOfMeasure());
 		priceTextField.setText(item.getPrice() + "");
 		pdvTextField.setText(item.getPdv() + "");
 	}
 
 	private boolean validFields() {
-		return !nameTextField.getText().trim().isEmpty() && !unitOfMeasureTextField.getText().trim().isEmpty() && !priceTextField.getText().trim().isEmpty() && !pdvTextField.getText().trim().isEmpty();
+		return !nameTextArea.getText().trim().isEmpty() && !unitOfMeasureTextField.getText().trim().isEmpty() && !priceTextField.getText().trim().isEmpty() && !pdvTextField.getText().trim().isEmpty();
 	}
 	
 	private void updateItem() {
-		item.setName(nameTextField.getText().trim());
+		item.setName(nameTextArea.getText().trim());
 		item.setUnitOfMeasure(unitOfMeasureTextField.getText().trim());
 		item.setPrice(Double.parseDouble(priceTextField.getText()));
 		item.setPdv(Integer.parseInt(pdvTextField.getText()));

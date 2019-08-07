@@ -134,8 +134,8 @@ public class FirmController implements Initializable, PutItem {
 		checkBoxesList.add(phoneHomeCheckBox);
 		checkBoxesList.add(faxCheckBox);
 		checkBoxesList.add(phoneMobCheckBox);
-		checkBoxesList.add(siteCheckBox);
 		checkBoxesList.add(mailCheckBox);
+		checkBoxesList.add(siteCheckBox);
 		checkBoxesList.add(logoCheckBox);
 	}
 
@@ -246,7 +246,7 @@ public class FirmController implements Initializable, PutItem {
 	 * @return Code of display data.
 	 */
 	private String writeShown() {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(12);
 		for (int i = 0; i < checkBoxesList.size(); i++) {
 			if (checkBoxesList.get(i).isSelected()) {
 				sb.append(MainController.SHOW);

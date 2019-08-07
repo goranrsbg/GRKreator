@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,9 +12,9 @@
    <children>
       <VBox alignment="CENTER" layoutX="17.0" layoutY="17.0" spacing="17.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <JFXTextField fx:id="nameTextField" labelFloat="true" promptText="Naziv Robe" text="" />
+            <JFXTextArea fx:id="nameTextArea" labelFloat="true" prefRowCount="2" promptText="Naziv Robe" />
             <JFXTextField fx:id="unitOfMeasureTextField" labelFloat="true" promptText="Jedinica Mere" text="" />
-            <JFXTextField fx:id="priceTextField" labelFloat="true" layoutX="27.0" layoutY="70.0" promptText="Cena" text="" />
+            <JFXTextField fx:id="priceTextField" labelFloat="true" layoutX="27.0" layoutY="70.0" promptText="Cena (maloprodajna)" text="" />
             <JFXTextField fx:id="pdvTextField" labelFloat="true" layoutX="27.0" layoutY="113.0" promptText="PDV" text="" />
             <HBox>
                <children>

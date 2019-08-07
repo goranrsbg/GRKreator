@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import goran.rs.bg.grkreator.etc.FirmDetails;
+import goran.rs.bg.grkreator.etc.TableStyle;
 import goran.rs.bg.grkreator.itemtable.ItemTable;
 import goran.rs.bg.grkreator.model.Document;
 import goran.rs.bg.grkreator.model.Firm;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -135,29 +137,52 @@ public class PrintController implements Initializable {
 	private Text recivingDate;
 
 	@FXML
+	private Text lastPayDay;
+
+	@FXML
 	private GridPane gridTable;
+
+	@FXML
+	private Label words;
+
+	@FXML
+	private Text totalSemi;
+
+	@FXML
+	private Text totalPdv;
+
+	@FXML
+	private Text total;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// GridPane header
 		String lineSeparator = System.lineSeparator();
-		gridTable.add(createCell("Rb.", Pos.CENTER, TextAlignment.CENTER), 0, 0);
-		gridTable.add(createCell("Naziv" + lineSeparator + "dobra/usluge", Pos.CENTER, TextAlignment.CENTER), 1, 0);
-		gridTable.add(createCell("Jm.", Pos.CENTER, TextAlignment.CENTER), 2, 0);
-		gridTable.add(createCell("Koli-" + lineSeparator + "čina", Pos.CENTER, TextAlignment.CENTER), 3, 0);
-		gridTable.add(createCell("Cena", Pos.CENTER, TextAlignment.CENTER), 4, 0);
-		gridTable.add(createCell("Poreska" + lineSeparator + "osnovica", Pos.CENTER, TextAlignment.CENTER), 5, 0);
-		gridTable.add(createCell("PDV", Pos.CENTER, TextAlignment.CENTER), 6, 0);
-		gridTable.add(createCell("Iznos" + lineSeparator + "PDV", Pos.CENTER, TextAlignment.CENTER), 7, 0);
-		gridTable.add(createCell("Ukupna" + lineSeparator + "naknada", Pos.CENTER, TextAlignment.CENTER), 8, 0);
+		gridTable.add(createCell("Rb.", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_FIRST), 0, 0);
+		gridTable.add(createCell("Naziv" + lineSeparator + "dobra/usluge", Pos.CENTER, TextAlignment.CENTER,
+				TableStyle.HEADER_MID), 1, 0);
+		gridTable.add(createCell("Jm.", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_MID), 2, 0);
+		gridTable.add(
+				createCell("Koli-" + lineSeparator + "čina", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_MID),
+				3, 0);
+		gridTable.add(createCell("Cena", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_MID), 4, 0);
+		gridTable.add(createCell("Poreska" + lineSeparator + "osnovica", Pos.CENTER, TextAlignment.CENTER,
+				TableStyle.HEADER_MID), 5, 0);
+		gridTable.add(createCell("PDV", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_MID), 6, 0);
+		gridTable.add(
+				createCell("Iznos" + lineSeparator + "PDV", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_MID), 7,
+				0);
+		gridTable.add(createCell("Ukupna" + lineSeparator + "naknada", Pos.CENTER, TextAlignment.CENTER,
+				TableStyle.HEADER_LAST), 8, 0);
 	}
 
-	private HBox createCell(String text, Pos pos, TextAlignment textAlignment) {
+	private HBox createCell(String text, Pos pos, TextAlignment textAlignment, TableStyle borderStyle) {
 		HBox box = new HBox();
 		Text textField = new Text(text);
 		textField.setTextAlignment(textAlignment);
 		box.getChildren().add(textField);
 		box.setAlignment(pos);
+		box.getStyleClass().add(borderStyle.VALUE);
 		return box;
 	}
 
@@ -182,7 +207,7 @@ public class PrintController implements Initializable {
 		if (sellerFirm.IsDataForDisplay(FirmDetails.WEB_ADDRESS)) {
 			sellerWebAddress.setText(sellerFirm.getSite());
 		} else {
-			selllerBoxDetails.getChildren().remove(sellerWebAddress);
+			selllerBoxDetails.getChildren().remove(sellerWebAddressBox);
 		}
 		if (sellerFirm.IsDataForDisplay(FirmDetails.PHONE_HOME)) {
 			sellerPhone.setText(sellerFirm.getPhoneHome());
@@ -262,32 +287,58 @@ public class PrintController implements Initializable {
 		sellingPlaceDate.setText(document.getSettlement());
 	}
 
-	public void setDates(String sellingDate, String recivingDate) {
+	public void setDates(String sellingDate, String recivingDate, String lasPayDay) {
 		sellingPlaceDate.setText(sellingPlaceDate.getText() + ", " + sellingDate);
 		this.recivingDate.setText(recivingDate);
+		this.lastPayDay.setText(lasPayDay);
 	}
 
 	public void setTableItems(List<ItemTable> items) {
 		for (int i = 0; i < items.size() - 1; i++) {
 			ItemTable item = items.get(i);
-			gridTable.addRow(i + 1, 
-					createCell(item.getRowNo(), Pos.CENTER, TextAlignment.CENTER),
-					createCell(item.getName(), Pos.CENTER_LEFT, TextAlignment.LEFT), 
-					createCell(item.getUnitOfMeasure(), Pos.CENTER, TextAlignment.CENTER),
-					createCell(item.getQuantityString(), Pos.CENTER_RIGHT, TextAlignment.RIGHT),
-					createCell(String.format("%,.2f din.", item.getPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT),
-					createCell(String.format("%,.2f din.", item.getSemiPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT),
-					createCell(String.format("%d%%", item.getPdv()), Pos.CENTER_RIGHT, TextAlignment.RIGHT),
-					createCell(String.format("%,.2f din.", item.getPdvPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT),
-					createCell(String.format("%,.2f din.", item.getTotalPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT));
+			if (i < items.size() - 2) {
+//				System.err.println("MID ROW");
+				gridTable.addRow(i + 1,
+						createCell(item.getRowNo(), Pos.CENTER, TextAlignment.CENTER, TableStyle.MID_FIRST),
+						createCell(item.getName(), Pos.CENTER_LEFT, TextAlignment.LEFT, TableStyle.MID_MID),
+						createCell(item.getUnitOfMeasure(), Pos.CENTER, TextAlignment.CENTER, TableStyle.MID_MID),
+						createCell(item.getQuantityString(), Pos.CENTER_RIGHT, TextAlignment.RIGHT, TableStyle.MID_MID),
+						createCell(String.format("%,.2f din.", item.getRealPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
+								TableStyle.MID_MID),
+						createCell(String.format("%,.2f din.", item.getSemiPrice()), Pos.CENTER_RIGHT,
+								TextAlignment.RIGHT, TableStyle.MID_MID),
+						createCell(String.format("%d%%", item.getPdv()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
+								TableStyle.MID_MID),
+						createCell(String.format("%,.2f din.", item.getPdvPrice()), Pos.CENTER_RIGHT,
+								TextAlignment.RIGHT, TableStyle.MID_MID),
+						createCell(String.format("%,.2f din.", item.getTotalPrice()), Pos.CENTER_RIGHT,
+								TextAlignment.RIGHT, TableStyle.MID_LAST));
+			} else {
+//				System.err.println("BOT ROW");
+				gridTable.addRow(i + 1,
+						createCell(item.getRowNo(), Pos.CENTER, TextAlignment.CENTER, TableStyle.BOT_FIRST),
+						createCell(item.getName(), Pos.CENTER_LEFT, TextAlignment.LEFT, TableStyle.BOT_MID),
+						createCell(item.getUnitOfMeasure(), Pos.CENTER, TextAlignment.CENTER, TableStyle.BOT_MID),
+						createCell(item.getQuantityString(), Pos.CENTER_RIGHT, TextAlignment.RIGHT, TableStyle.BOT_MID),
+						createCell(String.format("%,.2f din.", item.getRealPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
+								TableStyle.BOT_MID),
+						createCell(String.format("%,.2f din.", item.getSemiPrice()), Pos.CENTER_RIGHT,
+								TextAlignment.RIGHT, TableStyle.BOT_MID),
+						createCell(String.format("%d%%", item.getPdv()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
+								TableStyle.BOT_MID),
+						createCell(String.format("%,.2f din.", item.getPdvPrice()), Pos.CENTER_RIGHT,
+								TextAlignment.RIGHT, TableStyle.BOT_MID),
+						createCell(String.format("%,.2f din.", item.getTotalPrice()), Pos.CENTER_RIGHT,
+								TextAlignment.RIGHT, TableStyle.BOT_LAST));
+			}
 		}
 	}
 
 	public void setTotalPrices(String semiPrice, String pdvPrice, String totalPrice, String words) {
-		System.err.println(semiPrice);
-		System.err.println(pdvPrice);
-		System.err.println(totalPrice);
-		System.err.println(words);
+		this.words.setText(words + ".");
+		totalSemi.setText(semiPrice);
+		totalPdv.setText(pdvPrice);
+		total.setText(totalPrice);
 	}
 
 }

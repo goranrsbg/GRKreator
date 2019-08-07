@@ -11,7 +11,8 @@ public enum FirmDetails {
 	PHONE_FAX(7),
 	PHONE_MOB(8),
 	EMAIL(9),
-	WEB_ADDRESS(10);
+	WEB_ADDRESS(10),
+	LOGO(11);
 	public final int ID;
 	private FirmDetails(int id) {
 		this.ID = id;

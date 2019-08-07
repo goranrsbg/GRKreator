@@ -11,17 +11,27 @@
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<!-- database connection -->
-			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:db/dataDB;create=true" />
+			<property name="javax.persistence.jdbc.driver"
+				value="org.apache.derby.jdbc.EmbeddedDriver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:derby:db/dataDB;create=true" />
 			<property name="javax.persistence.jdbc.user" value="sa" />
 			<property name="javax.persistence.jdbc.password" value="sa" />
 			<property name="javax.persistence.lock.timeout" value="101" />
 			<property name="javax.persistence.query.timeout" value="101" />
-			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
 			<property name="hibernate.default_schema" value="APP" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect" />
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.DerbyTenSevenDialect" />
+			<property name="hibernate.c3p0.min_size" value="3" />
+			<property name="hibernate.c3p0.max_size" value="20" />
+			<property name="hibernate.c3p0.timeout" value="300" />
+			<property name="hibernate.c3p0.max_statements" value="21" />
+			<property name="hibernate.c3p0.idle_test_period"
+				value="3000" />
+
 		</properties>
 	</persistence-unit>
 </persistence>

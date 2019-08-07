@@ -155,14 +155,21 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="108.0" spacing="11.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" spacing="11.0" HBox.hgrow="ALWAYS">
-                           <children>
-                              <JFXButton buttonType="RAISED" onAction="#onAddOrUpdateItemButtonAction" styleClass="edit-orange" text="Dodaj/Ažuriraj Artikl" />
-                              <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#onRemoveRowButtonAction" styleClass="edit-orange" text="Ukloni Red" />
-                           </children>
-                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="11.0" HBox.hgrow="ALWAYS" />
                         <Label styleClass="details" text="Datum otpremanja:" />
                         <JFXDatePicker fx:id="recivingDatePicker" prefWidth="131.0" styleClass="details" HBox.hgrow="SOMETIMES" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="134.0" spacing="11.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="11.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <JFXButton fx:id="removeRowButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#onRemoveRowButtonAction" styleClass="edit-orange" text="Ukloni Red" />
+                              <JFXButton buttonType="RAISED" layoutX="170.0" layoutY="10.0" onAction="#onShowAllArticlesButtonAction" styleClass="edit-orange" text="Artikli" />
+                           </children>
+                        </HBox>
+                        <Label styleClass="details" text="Datum valute:" />
+                        <JFXDatePicker fx:id="lastPayDayDatePicker" prefWidth="131.0" styleClass="details" HBox.hgrow="SOMETIMES" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
@@ -170,7 +177,7 @@
                         <Insets top="23.0" />
                      </VBox.margin>
                      <children>
-                        <TableView fx:id="itemsTableView" editable="true" HBox.hgrow="ALWAYS">
+                        <TableView fx:id="itemsTableView" editable="true" onKeyPressed="#onTableKeyPressed" HBox.hgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="rbCol" editable="false" prefWidth="37.0" resizable="false" sortable="false" styleClass="center-align" text="Rb." />
                             <TableColumn fx:id="nameCol" onEditCommit="#onNameEditCommit" prefWidth="171.0" sortable="false" styleClass="notnumber-align" text="Naziv Robe" />
@@ -231,7 +238,7 @@
                   </HBox>
                </children>
             </VBox>
-            <ListView fx:id="searchItemListView" onKeyPressed="#onSearchItemListViewKeyPressed" onMouseClicked="#onSearchItemListViewMouseClicked" prefHeight="101.0" styleClass="search-list-view" visible="false" />
+            <ListView fx:id="searchItemListView" maxHeight="101.0" minHeight="101.0" onKeyPressed="#onSearchItemListViewKeyPressed" onMouseClicked="#onSearchItemListViewMouseClicked" prefHeight="101.0" styleClass="search-list-view" visible="false" />
          </children>
       </AnchorPane>
       <AnchorPane>

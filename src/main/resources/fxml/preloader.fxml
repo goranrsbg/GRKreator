@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+	prefHeight="151.0" prefWidth="151.0" styleClass="mainFxmlClass"
+	stylesheets="@/styles/preloader.css">
+	<children>
+		<StackPane prefHeight="393.0" prefWidth="601.0"
+			AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<JFXSpinner maxWidth="101.0" startingAngle="17.0" />
+				<JFXSpinner maxWidth="89.0" startingAngle="43.0" />
+				<JFXSpinner maxWidth="79.0" startingAngle="73.0" />
+				<JFXSpinner maxWidth="67.0" startingAngle="107.0" />
+				<JFXSpinner maxWidth="53.0" startingAngle="149.0" />
+			</children>
+		</StackPane>
+	</children>
+</AnchorPane>
+

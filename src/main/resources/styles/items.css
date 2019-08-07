@@ -1,0 +1,23 @@
+.root *{
+	-fx-font-family: "Varela Round";
+	-fx-text-fill: black;
+    -fx-font-size: 11.0pt;
+}
+
+.shiny-orange {
+    -fx-background-color: 
+        linear-gradient(#ffd65b, #e68400),
+        linear-gradient(#ffef84, #f2ba44),
+        linear-gradient(#ffea6a, #efaa22),
+        linear-gradient(#ffe657 0.0%, #f8c202 50.0%, #eea10b 100.0%),
+        linear-gradient(from 0.0% 0.0% to 15.0% 50.0%, rgba(255.0,255.0,255.0,0.9), rgba(255.0,255.0,255.0,0.0));
+    -fx-background-radius: 30.0;
+    -fx-text-fill: black;
+    -fx-font-weight: normal;
+}
+
+.shiny-orange:hover {
+	-fx-background-color:
+        linear-gradient(#f0ff35, #a9ff00),
+        radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+}

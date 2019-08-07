@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 
@@ -26,6 +27,7 @@ import goran.rs.bg.grkreator.model.Item;
 import goran.rs.bg.grkreator.thread.SearchFirmsService;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.DoubleProperty;
@@ -51,6 +53,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -120,6 +123,12 @@ public class MainController implements Initializable {
 
 	@FXML
 	private JFXDatePicker recivingDatePicker;
+
+	@FXML
+	private JFXDatePicker lastPayDayDatePicker;
+
+	@FXML
+	private JFXButton removeRowButton;
 
 	@FXML
 	private TableView<ItemTable> itemsTableView;
@@ -198,20 +207,20 @@ public class MainController implements Initializable {
 	 * Search types
 	 */
 	private final String[] SEARCH_PROMPT_TEXT = { "Traži po imenu", "Traži po PIB-u", "Traži po ID-u" };
-	private IntegerProperty searchTypeIndex = new SimpleIntegerProperty();;
+	private IntegerProperty searchTypeIndex = new SimpleIntegerProperty();
 	private SearchFirmsService searchFirmsService;
 	private DateTimeFormatter dateTimeFormatter;
-	
+
 	private Firm sellerFirm;
 	private Firm buyerFirm;
 	private Document documentDetails;
 
 	private final String firmFxml = "/fxml/firm.fxml";
 	private final String documentFxml = "/fxml/document.fxml";
-	private final String itemFxml = "/fxml/item.fxml";
+	private final String itemsFxml = "/fxml/items.fxml";
 	private final String printFxml = "/fxml/print.fxml";
 	private final String documentTitle = "Detalji računa";
-	private final String itemTitle = "Detalji Robe";
+	private final String itemsTitle = "Spisak Artikala";
 
 	private Window window;
 
@@ -238,7 +247,7 @@ public class MainController implements Initializable {
 				return new FirmListFormatCell();
 			}
 		});
-		
+
 		showFirmData(sellerFirmLogoImageView, sellerFirmDataGridPane, sellerFirm);
 		dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy.", new Locale("sr"));
 		StringConverter<LocalDate> dateConverter = new StringConverter<LocalDate>() {
@@ -254,9 +263,11 @@ public class MainController implements Initializable {
 		};
 		recivingDatePicker.setConverter(dateConverter);
 		sellingDatePicker.setConverter(dateConverter);
+		lastPayDayDatePicker.setConverter(dateConverter);
 		Platform.runLater(() -> {
 			sellingDatePicker.setValue(LocalDate.now());
 			recivingDatePicker.setValue(LocalDate.now());
+			lastPayDayDatePicker.setValue(LocalDate.now().plusDays(7L));
 		});
 		searchListItems = FXCollections.observableArrayList();
 		searchItemListView.setItems(searchListItems);
@@ -286,7 +297,16 @@ public class MainController implements Initializable {
 				new Callback<TableColumn.CellDataFeatures<ItemTable, String>, ObservableValue<String>>() {
 					@Override
 					public ObservableValue<String> call(CellDataFeatures<ItemTable, String> param) {
-						return param.getValue().priceProperty().asString("%,.2f din.");
+						DoubleBinding binding = new DoubleBinding() {
+							{
+								super.bind(param.getValue().priceProperty(), param.getValue().pdvProperty());
+							}
+							@Override
+							protected double computeValue() {
+								return param.getValue().getRealPrice();
+							}
+						};
+						return binding.asString("%,.2f din.");
 					}
 				});
 		qtyCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -343,6 +363,7 @@ public class MainController implements Initializable {
 					}
 				});
 		tableAddNewEmptyRow();
+		editName(tableItems.size() - 1);
 		searchItemListView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
 			@Override
 			public ListCell<Item> call(ListView<Item> param) {
@@ -468,27 +489,26 @@ public class MainController implements Initializable {
 			List<Item> foundItems = findItems(event.getNewValue());
 			int row = event.getTablePosition().getRow();
 			if (foundItems.isEmpty()) {
-				Item item = selectedItem.getItem();
-				item.setName(event.getNewValue());
-				showDetailsDialog(itemTitle, itemFxml, item);
-				selectedItem.refreshItem();
-				if (item.isValid()) {
-					editQuantity(row);
-				}
+				showAlertMessage(AlertType.INFORMATION, "Ne postoji artikl koji sadrži slova: *" + event.getNewValue() + "*");
+				selectRow(row);
 			} else if (foundItems.size() == 1) {
 				selectedItem.setItem(foundItems.get(0));
-				editQuantity(row);
+				selectRow(row);
 			} else {
-//				for (Item i : foundItems) {
-//					System.err.println(i);
-//				}
 				this.selectedItem = selectedItem;
 				this.row = row;
 				searchListItems.addAll(foundItems);
 
 				double topAnchorTable = itemsTableView.localToScene(itemsTableView.getBoundsInLocal()).getMinY();
 				double leftMargin = rbCol.getWidth() + nameCol.getWidth();
-				double topMargin = topAnchorTable + (row + 1) * 26d - 27.5;
+				String ls = System.lineSeparator();
+				int newRow = 0;
+				for (int i = 0; i < row; i++) {
+					ItemTable item = tableItems.get(i);
+					String name = item.getName();
+					newRow = newRow + name.split(ls).length - 1;
+				}
+				double topMargin = topAnchorTable + row * 26d + newRow * 21d - 0.5;
 				AnchorPane.setTopAnchor(searchItemListView, topMargin);
 				AnchorPane.setLeftAnchor(searchItemListView, leftMargin);
 				searchItemListView.setVisible(true);
@@ -497,25 +517,53 @@ public class MainController implements Initializable {
 					searchItemListView.requestFocus();
 				});
 			}
-		} else {
-			itemsTableView.refresh();
 		}
+		itemsTableView.refresh();
 		event.consume();
 	}
 
 	@FXML
 	void onQuantityEditCommit(TableColumn.CellEditEvent<ItemTable, String> event) {
+		event.consume();
 		try {
 			double value = Double.parseDouble(event.getNewValue());
 			ItemTable selectedItem = event.getRowValue();
+			int cRow = event.getTablePosition().getRow();
 			selectedItem.setQuantity(value);
 			ItemTable lastItemTable = tableItems.get(tableItems.size() - 1);
 			if (value > 0d && lastItemTable.getItem().isValid() && lastItemTable.getQuantity() > 0d) {
-				updateRowNoValues();
 				tableAddNewEmptyRow();
+				updateRowNoValues();
 			}
+			selectRow(cRow + 1);
 		} catch (Exception e) {
 			itemsTableView.refresh();
+		}
+	}
+
+	@FXML
+	void onTableKeyPressed(KeyEvent event) {
+		@SuppressWarnings("rawtypes")
+		ObservableList<TablePosition> selectedCells = itemsTableView.getSelectionModel().getSelectedCells();
+		if (selectedCells.size() == 1) {
+			if (event.getCode() == KeyCode.ENTER) {
+				editName(selectedCells.get(0).getRow());
+			} else if (event.getCode() == KeyCode.DELETE) {
+				removeRowButton.fire();
+			} else if (event.getCode() == KeyCode.DIGIT1 || event.getCode() == KeyCode.DIGIT2
+					|| event.getCode() == KeyCode.DIGIT3 || event.getCode() == KeyCode.DIGIT4
+					|| event.getCode() == KeyCode.DIGIT5 || event.getCode() == KeyCode.DIGIT6
+					|| event.getCode() == KeyCode.DIGIT7 || event.getCode() == KeyCode.DIGIT8
+					|| event.getCode() == KeyCode.DIGIT9 || event.getCode() == KeyCode.NUMPAD1
+					|| event.getCode() == KeyCode.NUMPAD2 || event.getCode() == KeyCode.NUMPAD3
+					|| event.getCode() == KeyCode.NUMPAD4 || event.getCode() == KeyCode.NUMPAD5
+					|| event.getCode() == KeyCode.NUMPAD6 || event.getCode() == KeyCode.NUMPAD7
+					|| event.getCode() == KeyCode.NUMPAD8 || event.getCode() == KeyCode.NUMPAD9) {
+				int sRow = selectedCells.get(0).getRow();
+				if (tableItems.get(sRow).getItem().isValid()) {
+					editQuantity(sRow);
+				}
+			}
 		}
 	}
 
@@ -525,7 +573,7 @@ public class MainController implements Initializable {
 			searchItemListView.setVisible(false);
 		} else if (event.getCode() == KeyCode.ENTER) {
 			selectedItem.setItem(searchItemListView.getSelectionModel().getSelectedItem());
-			goEditNextRow();
+			goEditQty();
 		}
 	}
 
@@ -533,22 +581,7 @@ public class MainController implements Initializable {
 	void onSearchItemListViewMouseClicked(MouseEvent event) {
 		if (event.getClickCount() == 2) {
 			selectedItem.setItem(searchItemListView.getSelectionModel().getSelectedItem());
-			goEditNextRow();
-		}
-	}
-
-	@FXML
-	void onAddOrUpdateItemButtonAction(ActionEvent event) {
-		ItemTable itemTable = itemsTableView.getSelectionModel().getSelectedItem();
-		Item item = null;
-		if (itemTable == null) {
-			item = tableItems.get(tableItems.size() - 1).getItem();
-		} else {
-			item = itemTable.getItem();
-		}
-		showDetailsDialog(itemTitle, itemFxml, item);
-		if (itemTable != null) {
-			itemTable.refreshItem();
+			goEditQty();
 		}
 	}
 
@@ -561,11 +594,37 @@ public class MainController implements Initializable {
 			updateRowNoValues();
 		}
 	}
-	
-    @FXML
-    void onPrintButtonAction(ActionEvent event) {
-    	doPrint();
-    }
+
+	@FXML
+	void onShowAllArticlesButtonAction(ActionEvent event) {
+		FXMLLoader loader = new FXMLLoader();
+		Stage stage = new Stage();
+		Parent root;
+		try {
+			root = loader.<Parent>load(getClass().getResourceAsStream(itemsFxml));
+			ItemsController controller = loader.<ItemsController>getController();
+			controller.setEntityManager(em);
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.setTitle(itemsTitle);
+			stage.initOwner(window);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+			showAlertMessage(AlertType.ERROR, "Error loading fxml file. (" + itemsFxml + ")" + " " + e.getMessage());
+		}
+	}
+
+	@FXML
+	void onPrintButtonAction(ActionEvent event) {
+		if(doPrint()) {
+			documentDetails.setValue(documentDetails.getValue() + 1);
+			em.getTransaction().begin();
+			em.merge(documentDetails);
+			em.getTransaction().commit();
+		}
+	}
 
 	private void updateSumBindings() {
 		initTotalSums();
@@ -573,10 +632,15 @@ public class MainController implements Initializable {
 			addTotalSumValue(item);
 		}
 	}
+	
+	private void selectRow(int rowNo) {
+		itemsTableView.getSelectionModel().clearAndSelect(rowNo);
+		itemsTableView.requestFocus();
+	}
 
-	private void goEditNextRow() {
-		editQuantity(row);
+	private void goEditQty() {
 		searchItemListHide();
+		editQuantity(row);
 	}
 
 	private void editQuantity(int row) {
@@ -730,12 +794,27 @@ public class MainController implements Initializable {
 		ItemTable item = new ItemTable(new Item("", "kom", 0d, 0));
 		tableItems.add(item);
 		addTotalSumValue(item);
-		editName(tableItems.size() - 1);
 	}
 
 	private void addTotalSumValue(ItemTable item) {
-		semiPrice = Bindings.add(semiPrice, item.semiPriceProperty());
-		pdvPrice = Bindings.add(pdvPrice, item.pdvPriceProperty());
+		semiPrice = Bindings.add(semiPrice, new DoubleBinding() {
+			{
+				super.bind(item.semiPriceProperty());
+			}
+			@Override
+			protected double computeValue() {
+				return Double.parseDouble(item.semiPriceProperty().asString("%.2f").get());
+			}
+		});
+		pdvPrice = Bindings.add(pdvPrice, new DoubleBinding() {
+			{
+				super.bind(item.pdvPriceProperty());
+			}
+			@Override
+			protected double computeValue() {
+				return Double.parseDouble(item.pdvPriceProperty().asString("%.2f").get());
+			}
+		});
 		totalPrice = Bindings.add(totalPrice, item.totalPriceProperty());
 		bindSumLabels();
 	}
@@ -777,13 +856,14 @@ public class MainController implements Initializable {
 	}
 
 	private void displayDocumentDetails() {
-		labelAccoundNumber.setText(String.format("Rb: %04d/%d", documentDetails.getValue(), LocalDate.now().getYear() % 100));
+		labelAccoundNumber
+				.setText(String.format("Rb: %04d/%d", documentDetails.getValue(), LocalDate.now().getYear() % 100));
 		labelTitle.setText(documentDetails.getTitle());
 		labelSettlement.setText(documentDetails.getSettlement());
 	}
 
 	private void updateRowNoValues() {
-		for (int i = 0; i < tableItems.size(); i++) {
+		for (int i = 0; i < tableItems.size() - 1; i++) {
 			tableItems.get(i).setRowNo(i + 1);
 		}
 	}
@@ -793,35 +873,37 @@ public class MainController implements Initializable {
 		searchItemListView.setVisible(false);
 		searchListItems.clear();
 	}
-	
+
 	private boolean doPrint() {
-		
+
 		PrinterJob job = PrinterJob.createPrinterJob();
-		if(job == null) {
+		if (job == null) {
 			showAlertMessage(AlertType.ERROR, "Štampač nije pronađen.");
 			return false;
 		}
-		job.getJobSettings().copiesProperty().set(3);
-		if(!job.showPrintDialog(window)) {
+		job.getJobSettings().copiesProperty().set(1);
+		if (!job.showPrintDialog(window)) {
 			return false;
 		}
-		
+
 		PageLayout pageLayout = job.getJobSettings().getPageLayout();
 
-		double printableHeight = pageLayout.getPrintableHeight();
+//		double printableHeight = pageLayout.getPrintableHeight();
 		double printableWidth = pageLayout.getPrintableWidth();
-		
+
 		Parent root = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			root = loader.<Parent>load(getClass().getResourceAsStream(printFxml));
 			PrintController controller = loader.<PrintController>getController();
+			controller.setTableItems(tableItems);
 			controller.setSellerFirm(sellerFirm);
 			controller.setBuyerFirm(buyerFirm);
 			controller.setDocumentDetails(documentDetails);
-			controller.setDates(sellingDatePicker.getValue().format(dateTimeFormatter) + " godine", recivingDatePicker.getValue().format(dateTimeFormatter)+ " godine");
-			controller.setTableItems(tableItems);
-			controller.setTotalPrices(labelSemiPrice.getText(), labelPdvNumber.getText(), labelTotalNumber.getText(), labelNumberWords.getText());
+			controller.setDates(sellingDatePicker.getValue().format(dateTimeFormatter) + " godine",
+					recivingDatePicker.getValue().format(dateTimeFormatter) + " godine", lastPayDayDatePicker.getValue().format(dateTimeFormatter) + " godine");
+			controller.setTotalPrices(labelSemiPrice.getText(), labelPdvNumber.getText(), labelTotalNumber.getText(),
+					labelNumberWords.getText());
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			stage.setScene(scene);
@@ -833,15 +915,15 @@ public class MainController implements Initializable {
 			return false;
 		}
 		double width = root.getLayoutBounds().getWidth();
-		double scaleX = printableWidth/width;
-		System.err.println("scaleX: "+ scaleX );
-		System.err.println("printableH: "+ printableHeight );
+		double scaleX = printableWidth / width;
+//		System.err.println("scaleX: " + scaleX);
+//		System.err.println("printableH: " + printableHeight);
 		root.getTransforms().add(new Scale(scaleX, scaleX));
-		
-//		if(!job.printPage(root)) {
-//			showAlertMessage(AlertType.ERROR, "Štampanje nije uspelo.");
-//			return false; 
-//		}
+
+		if(!job.printPage(root)) {
+			showAlertMessage(AlertType.ERROR, "Štampanje nije uspelo.");
+			return false; 
+		}
 		return job.endJob();
 	}
 

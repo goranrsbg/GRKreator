@@ -1,31 +1,99 @@
 .root *{
 	-fx-font-family: "Varela Round";
 	-fx-text-fill: black;
-	-fx-background-color: rgba(255,255,255,1);
+	-fx-background-color: rgba(255.0,255.0,255.0,1.0);
+	-fx-text-base-color: black;
 }
 
 .pib-first {
-	-fx-border-width: 0 1 1 1;
+	-fx-border-width: 0.0 1.0 1.0 1.0;
 	-fx-border-color: black;
 	-fx-border-style: solid;
 }
 
 .pib-rest {
-	-fx-border-width: 0 1 1 0;
+	-fx-border-width: 0.0 1.0 1.0 0.0;
 	-fx-border-color: black;
 	-fx-border-style: solid;
 }
 
 .text-mbr {
-	-fx-font-size: 10pt;
+	-fx-font-size: 10.0pt;
 }
 .capition-text{
 	-fx-font-family: "Carrois Gothic SC";
-    -fx-font-size: 13pt;
-}
-.buyer-box {
-	-fx-background-color: rgba(0,0,0,0.1);	
+    -fx-font-size: 13.0pt;
 }
 .title{
-    -fx-font-size: 14pt;
+    -fx-font-size: 14.0pt;
 }
+.totals {
+	-fx-font-size: 10.0pt;
+}
+.total {
+	-fx-font-size: 12.0pt;
+}
+.shaded {
+	-fx-background-color: rgba(0.0,0.0,0.0,0.1);
+}
+.line-border {
+	-fx-border-width: 1.0 0.0 0.0 0.0;
+	-fx-border-color: black;
+	-fx-border-style: solid;
+}
+
+/* Table border */
+.header-first {
+	-fx-border-style: solid dotted solid solid;
+	-fx-border-width: 2.0 1.0 1.0 2.0;
+	-fx-border-color: black;
+}
+.header-mid {
+	-fx-border-style: solid dotted solid none;
+	-fx-border-width: 2.0 1.0 1.0 0.0;
+	-fx-border-color: black;
+}
+.header-last {
+	-fx-border-style: solid;
+	-fx-border-width: 2.0 2.0 1.0 0.0;
+	-fx-border-color: black;
+}
+.mid-first {
+	-fx-border-style: dotted dotted dashed solid;
+	-fx-border-width: 0.0 1.0 1.0 2.0;
+	-fx-border-color: black;
+}
+.mid-mid {
+	-fx-border-style: dotted dotted dashed none;
+	-fx-border-width: 0.0 1.0 1.0 0.0;
+	-fx-border-color: black;
+}
+.mid-last {
+	-fx-border-style: dotted solid dashed none;
+	-fx-border-width: 0.0 2.0 1.0 0.0;
+	-fx-border-color: black;
+}
+.bot-first {
+	-fx-border-style: dotted dotted solid solid;
+	-fx-border-width: 0.0 1.0 2.0 2.0;
+	-fx-border-color: black;
+}
+.bot-mid {
+	-fx-border-style: dotted dotted solid none;
+	-fx-border-width: 0.0 1.0 2.0 0.0;
+	-fx-border-color: black;
+}
+.bot-last {
+	-fx-border-style: solid;
+	-fx-border-width: 0.0 2.0 2.0 0.0;
+	-fx-border-color: black;
+}
+
+
+
+
+
+
+
+
+

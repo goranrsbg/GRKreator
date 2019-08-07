@@ -1,5 +1,7 @@
 package goran.rs.bg.grkreator;
 
+import static com.sun.javafx.application.LauncherImpl.launchApplication;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class GRkretor extends Application {
+public class GRkreator extends Application {
 
 	@Override
 	public void init() throws Exception {
@@ -44,8 +46,9 @@ public class GRkretor extends Application {
 		DB.close();
 	}
 	
+	@SuppressWarnings("restriction")
 	public static void main(String[] args) {
-		launch(args);
+		launchApplication(GRkreator.class, Preloader.class, args);
 	}
 
 }

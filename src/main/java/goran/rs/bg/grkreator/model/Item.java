@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "T_ITEM")
-@NamedQueries({ @NamedQuery(name = "Item.findAll", query = "select i from Item i"),
+@NamedQueries({ @NamedQuery(name = "Item.findAll", query = "select i from Item i order by ITEM_NAME"),
 		@NamedQuery(name = "Item.findByName", query = "select i from Item i where lower(ITEM_NAME) like :name") })
 public class Item {
 
@@ -83,6 +83,10 @@ public class Item {
 
 	public boolean isValid() {
 		return id != null;
+	}
+	
+	public String toShortString() {
+		return String.format("%s (%s) %.2f din. %2d%%", name, unitOfMeasure, price, pdv);
 	}
 
 	@Override

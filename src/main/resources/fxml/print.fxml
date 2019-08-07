@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -48,7 +49,7 @@
 								</HBox>
 								<HBox fx:id="sellerPhoneBox" alignment="CENTER_LEFT">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<children>
 												<Text fx:id="sellerTelNameText" text="Tel." />
 											</children>
@@ -56,7 +57,7 @@
 												<Insets />
 											</HBox.margin>
 										</HBox>
-										<HBox>
+										<HBox alignment="CENTER_LEFT">
 											<children>
 												<Text fx:id="sellerPhone" text="Firm Telephone" />
 											</children>
@@ -65,7 +66,7 @@
 								</HBox>
 								<HBox fx:id="sellerFaxBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="74.0">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<HBox.margin>
 												<Insets />
 											</HBox.margin>
@@ -73,7 +74,7 @@
 												<Text text="Fax." />
 											</children>
 										</HBox>
-										<HBox>
+										<HBox alignment="CENTER_LEFT">
 											<children>
 												<Text fx:id="sellerFax" text="Firm Fax" />
 											</children>
@@ -82,7 +83,7 @@
 								</HBox>
 								<HBox fx:id="sellerMobBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="90.0">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<HBox.margin>
 												<Insets />
 											</HBox.margin>
@@ -90,7 +91,7 @@
 												<Text text="Mob." />
 											</children>
 										</HBox>
-										<HBox>
+										<HBox alignment="CENTER_LEFT">
 											<children>
 												<Text fx:id="sellerMob" text="Firm Mob" />
 											</children>
@@ -99,7 +100,7 @@
 								</HBox>
 								<HBox fx:id="sellerPIBbox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<HBox.margin>
 												<Insets />
 											</HBox.margin>
@@ -156,7 +157,7 @@
 								</HBox>
 								<HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<HBox.margin>
 												<Insets />
 											</HBox.margin>
@@ -181,7 +182,7 @@
 						</VBox>
 						<VBox fx:id="buyerBoxDetails" layoutX="258.0380859375" spacing="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<children>
-								<HBox alignment="CENTER_LEFT" styleClass="buyer-box">
+								<HBox alignment="CENTER_LEFT" styleClass="shaded">
 									<children>
 										<Text styleClass="capition-text" text="Kupac" />
 									</children>
@@ -198,12 +199,12 @@
 								</HBox>
 								<HBox fx:id="buyerPhoneBox" alignment="CENTER_LEFT">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<children>
 												<Text fx:id="buyerTelNameText" text="Tel." />
 											</children>
 										</HBox>
-										<HBox>
+										<HBox alignment="CENTER_LEFT">
 											<children>
 												<Text fx:id="buyerPhone" text="Firm Telephone" />
 											</children>
@@ -212,12 +213,12 @@
 								</HBox>
 								<HBox fx:id="buyerMobBox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="90.0">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<children>
 												<Text text="Mob." />
 											</children>
 										</HBox>
-										<HBox>
+										<HBox alignment="CENTER_LEFT">
 											<children>
 												<Text fx:id="buyerMob" text="Firm Mob" />
 											</children>
@@ -226,7 +227,7 @@
 								</HBox>
 								<HBox fx:id="buyerPIBbox" alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<HBox.margin>
 												<Insets />
 											</HBox.margin>
@@ -283,12 +284,12 @@
 								</HBox>
 								<HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="106.0">
 									<children>
-										<HBox prefWidth="51.0">
+										<HBox alignment="CENTER_LEFT" prefWidth="51.0">
 											<children>
 												<Text text="MBR" />
 											</children>
 										</HBox>
-										<HBox>
+										<HBox alignment="CENTER_LEFT">
 											<children>
 												<Text fx:id="buyerIDNumber" strokeType="OUTSIDE" strokeWidth="0.0" text="000000000" />
 											</children>
@@ -329,12 +330,12 @@
 						<Text fx:id="recivingDate" strokeType="OUTSIDE" strokeWidth="0.0" text="mesto i datum" />
 					</children>
 				</HBox>
-				<HBox>
+				<HBox styleClass="border-all">
 					<VBox.margin>
-						<Insets top="11.0" />
+						<Insets bottom="11.0" top="11.0" />
 					</VBox.margin>
                <children>
-                  <GridPane fx:id="gridTable" alignment="CENTER" maxWidth="1.7976931348623157E308" vgap="3.0" HBox.hgrow="ALWAYS">
+                  <GridPane fx:id="gridTable" alignment="CENTER" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -353,7 +354,130 @@
                   </GridPane>
                </children>
 				</HBox>
+            <HBox alignment="TOP_RIGHT">
+               <children>
+                  <VBox alignment="BOTTOM_RIGHT" prefWidth="437.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <HBox alignment="TOP_CENTER" spacing="7.0" styleClass="shaded">
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Datum valute:" />
+                                          <Text fx:id="lastPayDay" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER_RIGHT" spacing="7.0">
+                           <children>
+                              <HBox alignment="TOP_RIGHT">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="totals" text="Slovima:" />
+                                 </children>
+                                 <padding>
+                                    <Insets top="1.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox>
+                                 <children>
+                                    <Label fx:id="words" alignment="TOP_LEFT" styleClass="totals" text="Text" underline="true" wrapText="true" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets right="11.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox spacing="3.0">
+                     <children>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT">
+                                 <HBox.margin>
+                                    <Insets right="7.0" />
+                                 </HBox.margin>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="totals" text="Iznos" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT">
+                                 <children>
+                                    <HBox alignment="CENTER_RIGHT">
+                                       <children>
+                                          <Text fx:id="totalSemi" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="totals" text="Text" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT">
+                                 <HBox.margin>
+                                    <Insets right="7.0" />
+                                 </HBox.margin>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="totals" text="Poreska osnovica" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT">
+                                 <children>
+                                    <Text fx:id="totalPdv" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="totals" text="Text" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT" styleClass="shaded">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="total" text="Za uplatu" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="7.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" styleClass="shaded">
+                                 <children>
+                                    <Text fx:id="total" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="total" text="Text" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
 			</children>
 		</VBox>
+      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="line-border" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Račun primio" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="M. P." />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="210.0" layoutY="10.0" maxWidth="1.7976931348623157E308" styleClass="line-border" HBox.hgrow="ALWAYS">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Račun izdao" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
 	</children>
 </AnchorPane>
