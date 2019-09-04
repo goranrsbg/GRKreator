@@ -10,3 +10,5 @@
 - [x] Make it look nice.
 - [ ] Add optional vehicle details.
 - [ ] Group same items inside table.
+
+:smirk:
