@@ -1,5 +1,6 @@
 /db
 /target
+/.settings
 derby.log
 out.ps
 icon.ico
