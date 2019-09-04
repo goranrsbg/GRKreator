@@ -1,7 +1,7 @@
-/bin/
-/db/
-/derby.log
-/target/
-/out.ps
-/logo.png
+/bin
+/db
+/target
+derby.log
+out.ps
+icon.ico
 
