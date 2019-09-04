@@ -111,7 +111,7 @@
          <children>
             <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox alignment="CENTER">
+                  <HBox alignment="CENTER" fillHeight="false" VBox.vgrow="SOMETIMES">
                      <children>
                         <JFXButton buttonType="RAISED" onAction="#onCenterButtonAction" ripplerFill="#07eb5f" styleClass="shiny-orange" text="Izmeni" textAlignment="CENTER">
                            <HBox.margin>
@@ -137,7 +137,7 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="70.0" spacing="23.0">
+                  <HBox alignment="CENTER" fillHeight="false" layoutX="10.0" layoutY="70.0" spacing="23.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <Label fx:id="labelTitle" alignment="CENTER" contentDisplay="CENTER" styleClass="title" text="Račun" HBox.hgrow="ALWAYS" />
                         <Label fx:id="labelAccoundNumber" alignment="CENTER" contentDisplay="CENTER" styleClass="details" text="Br. " HBox.hgrow="ALWAYS" />
@@ -146,21 +146,21 @@
                         <Insets bottom="11.0" top="11.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="108.0" spacing="11.0">
+                  <HBox alignment="CENTER_RIGHT" fillHeight="false" layoutX="10.0" layoutY="108.0" spacing="11.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <Label styleClass="details" text="Mesto:" />
                         <Label fx:id="labelSettlement" layoutX="304.0" layoutY="10.0" styleClass="details" />
                         <JFXDatePicker fx:id="sellingDatePicker" prefWidth="131.0" styleClass="details" HBox.hgrow="SOMETIMES" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="108.0" spacing="11.0">
+                  <HBox alignment="CENTER_RIGHT" fillHeight="false" layoutX="10.0" layoutY="108.0" spacing="11.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="11.0" HBox.hgrow="ALWAYS" />
                         <Label styleClass="details" text="Datum otpremanja:" />
                         <JFXDatePicker fx:id="recivingDatePicker" prefWidth="131.0" styleClass="details" HBox.hgrow="SOMETIMES" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="134.0" spacing="11.0">
+                  <HBox alignment="CENTER_RIGHT" fillHeight="false" layoutX="10.0" layoutY="134.0" spacing="11.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="11.0" HBox.hgrow="ALWAYS">
                            <children>
@@ -177,7 +177,7 @@
                         <Insets top="23.0" />
                      </VBox.margin>
                      <children>
-                        <TableView fx:id="itemsTableView" editable="true" onKeyPressed="#onTableKeyPressed" HBox.hgrow="ALWAYS">
+                        <TableView fx:id="itemsTableView" editable="true" maxHeight="1.7976931348623157E308" onKeyPressed="#onTableKeyPressed" HBox.hgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="rbCol" editable="false" prefWidth="37.0" resizable="false" sortable="false" styleClass="center-align" text="Rb." />
                             <TableColumn fx:id="nameCol" onEditCommit="#onNameEditCommit" prefWidth="171.0" sortable="false" styleClass="notnumber-align" text="Naziv Robe" />
@@ -200,7 +200,7 @@
                         </TableView>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <Label styleClass="total-labels-text" text="Iznos" />
                         <Label fx:id="labelSemiPrice" alignment="CENTER_RIGHT" prefWidth="211.0" styleClass="total-labels-text" text="Label" />
@@ -209,7 +209,7 @@
                         <Insets right="11.0" top="11.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="594.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="594.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <Label styleClass="total-labels-text" text="Poreska Osnovica" />
                         <Label fx:id="labelPdvNumber" alignment="CENTER_RIGHT" prefWidth="211.0" styleClass="total-labels-text" text="Label" />
@@ -218,7 +218,7 @@
                         <Insets right="11.0" top="11.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="621.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="621.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <Label style="-fx-font-weight: bold;" styleClass="total-labels-text" text="Za Uplatu" />
                         <Label fx:id="labelTotalNumber" alignment="CENTER_RIGHT" prefWidth="211.0" style="-fx-font-weight: bold;" styleClass="total-labels-text" text="Label" />
@@ -227,7 +227,7 @@
                         <Insets right="11.0" top="11.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="648.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="648.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <Label styleClass="total-labels-text" text="Slovima" />
                         <Label fx:id="labelNumberWords" alignment="CENTER_RIGHT" minWidth="211.0" styleClass="total-labels-text" text="Label" underline="true" />

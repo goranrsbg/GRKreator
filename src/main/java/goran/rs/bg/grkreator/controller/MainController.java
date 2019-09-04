@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -44,6 +45,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.print.PageLayout;
 import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -66,8 +68,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
+import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -301,6 +306,7 @@ public class MainController implements Initializable {
 							{
 								super.bind(param.getValue().priceProperty(), param.getValue().pdvProperty());
 							}
+
 							@Override
 							protected double computeValue() {
 								return param.getValue().getRealPrice();
@@ -489,7 +495,8 @@ public class MainController implements Initializable {
 			List<Item> foundItems = findItems(event.getNewValue());
 			int row = event.getTablePosition().getRow();
 			if (foundItems.isEmpty()) {
-				showAlertMessage(AlertType.INFORMATION, "Ne postoji artikl koji sadrži slova: *" + event.getNewValue() + "*");
+				showAlertMessage(AlertType.INFORMATION,
+						"Ne postoji artikl koji sadrži slova: *" + event.getNewValue() + "*");
 				selectRow(row);
 			} else if (foundItems.size() == 1) {
 				selectedItem.setItem(foundItems.get(0));
@@ -501,14 +508,8 @@ public class MainController implements Initializable {
 
 				double topAnchorTable = itemsTableView.localToScene(itemsTableView.getBoundsInLocal()).getMinY();
 				double leftMargin = rbCol.getWidth() + nameCol.getWidth();
-				String ls = System.lineSeparator();
-				int newRow = 0;
-				for (int i = 0; i < row; i++) {
-					ItemTable item = tableItems.get(i);
-					String name = item.getName();
-					newRow = newRow + name.split(ls).length - 1;
-				}
-				double topMargin = topAnchorTable + row * 26d + newRow * 21d - 0.5;
+
+				double topMargin = topAnchorTable + 37d;
 				AnchorPane.setTopAnchor(searchItemListView, topMargin);
 				AnchorPane.setLeftAnchor(searchItemListView, leftMargin);
 				searchItemListView.setVisible(true);
@@ -572,8 +573,11 @@ public class MainController implements Initializable {
 		if (event.getCode() == KeyCode.ESCAPE) {
 			searchItemListView.setVisible(false);
 		} else if (event.getCode() == KeyCode.ENTER) {
-			selectedItem.setItem(searchItemListView.getSelectionModel().getSelectedItem());
-			goEditQty();
+			Item item = searchItemListView.getSelectionModel().getSelectedItem();
+			if (item != null) {
+				selectedItem.setItem(searchItemListView.getSelectionModel().getSelectedItem());
+				goEditQty();
+			}
 		}
 	}
 
@@ -618,7 +622,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	void onPrintButtonAction(ActionEvent event) {
-		if(doPrint()) {
+		if (doPrint()) {
 			documentDetails.setValue(documentDetails.getValue() + 1);
 			em.getTransaction().begin();
 			em.merge(documentDetails);
@@ -632,7 +636,7 @@ public class MainController implements Initializable {
 			addTotalSumValue(item);
 		}
 	}
-	
+
 	private void selectRow(int rowNo) {
 		itemsTableView.getSelectionModel().clearAndSelect(rowNo);
 		itemsTableView.requestFocus();
@@ -801,6 +805,7 @@ public class MainController implements Initializable {
 			{
 				super.bind(item.semiPriceProperty());
 			}
+
 			@Override
 			protected double computeValue() {
 				return Double.parseDouble(item.semiPriceProperty().asString("%.2f").get());
@@ -810,6 +815,7 @@ public class MainController implements Initializable {
 			{
 				super.bind(item.pdvPriceProperty());
 			}
+
 			@Override
 			protected double computeValue() {
 				return Double.parseDouble(item.pdvPriceProperty().asString("%.2f").get());
@@ -888,22 +894,26 @@ public class MainController implements Initializable {
 
 		PageLayout pageLayout = job.getJobSettings().getPageLayout();
 
-//		double printableHeight = pageLayout.getPrintableHeight();
-		double printableWidth = pageLayout.getPrintableWidth();
+		final double printableHeight = pageLayout.getPrintableHeight();
+		final double printableWidth = pageLayout.getPrintableWidth();
 
-		Parent root = null;
+		AnchorPane root = null;
+		ArrayList<HBox> firstCells = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			root = loader.<Parent>load(getClass().getResourceAsStream(printFxml));
+			root = loader.<AnchorPane>load(getClass().getResourceAsStream(printFxml));
 			PrintController controller = loader.<PrintController>getController();
 			controller.setTableItems(tableItems);
 			controller.setSellerFirm(sellerFirm);
 			controller.setBuyerFirm(buyerFirm);
 			controller.setDocumentDetails(documentDetails);
 			controller.setDates(sellingDatePicker.getValue().format(dateTimeFormatter) + " godine",
-					recivingDatePicker.getValue().format(dateTimeFormatter) + " godine", lastPayDayDatePicker.getValue().format(dateTimeFormatter) + " godine");
+					recivingDatePicker.getValue().format(dateTimeFormatter) + " godine",
+					lastPayDayDatePicker.getValue().format(dateTimeFormatter) + " godine");
 			controller.setTotalPrices(labelSemiPrice.getText(), labelPdvNumber.getText(), labelTotalNumber.getText(),
 					labelNumberWords.getText());
+			firstCells = controller.getFirstCells();
+			root.autosize();
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			stage.setScene(scene);
@@ -915,16 +925,75 @@ public class MainController implements Initializable {
 			return false;
 		}
 		double width = root.getLayoutBounds().getWidth();
-		double scaleX = printableWidth / width;
-//		System.err.println("scaleX: " + scaleX);
-//		System.err.println("printableH: " + printableHeight);
-		root.getTransforms().add(new Scale(scaleX, scaleX));
+		double height = root.getLayoutBounds().getHeight();
+		double scaleFactor = printableWidth / width;
+		double translateY = 0d;
+		double numberOfPages = Math.ceil(height * scaleFactor / printableHeight);
+		double slicePoint = 0d;
 
-		if(!job.printPage(root)) {
-			showAlertMessage(AlertType.ERROR, "Štampanje nije uspelo.");
-			return false; 
+//		System.err.println("scaleX: " + scaleFactor);
+//		System.err.println("Printable height: " + printableHeight);
+//		System.err.println("Real printable height: " + realPrintableHeight);
+//		System.err.println("Real document hight: " + height);
+//		System.err.println("Number of pages: " + numberOfPages);
+//		System.err.println("Root height: " + root.getBoundsInLocal().getHeight());
+
+		Translate prinTranslate = new Translate(translateY, translateY);
+		root.getTransforms().add(new Scale(scaleFactor, scaleFactor));
+		root.getTransforms().add(prinTranslate);
+
+		Node clip = root.getClip();
+		List<Transform> transforms = new ArrayList<>(root.getTransforms());
+
+		for (int i = 0; i < numberOfPages; i++) {
+
+			if (firstCells != null && (i + 1) < numberOfPages) {
+//				System.err.println("Calculate row line to splip page... :");
+
+				slicePoint = findSlicePoint(firstCells, printableHeight);
+//				System.err.println("Slice point: " + slicePoint);
+//				System.err.println("TranslateY: " + translateY);
+				root.setClip(new Rectangle(0d, 0d, width, (slicePoint - translateY) / scaleFactor));
+
+				// root.setMaxHeight(slicePoint);
+//
+//				for (int j = 0; j < firstCells.size(); j++) {
+//					HBox hBox = firstCells.get(j);
+//					System.err.println("Row " + j + " : " + hBox.localToScene(hBox.getBoundsInLocal()).getMinY());
+//				}
+			}
+			translateY -= slicePoint;
+
+			if (!job.printPage(root)) {
+				showAlertMessage(AlertType.ERROR, "Štampanje nije uspelo.");
+				return false;
+			}
+			root.getTransforms().clear();
+			root.getTransforms().addAll(transforms);
+			root.setClip(clip);
+			prinTranslate.setY(translateY / scaleFactor);
 		}
 		return job.endJob();
+	}
+
+	private double findSlicePoint(ArrayList<HBox> firstCells, final double printableHeight) {
+		double slicePoint = 0d;
+		for (int i = 0; i < firstCells.size(); i++) {
+			HBox hBox = firstCells.get(i);
+			double minY = hBox.localToScene(hBox.getBoundsInLocal()).getMinY();
+			if (minY >= printableHeight) {
+				if (i > 0) {
+					hBox = firstCells.get(i - 1);
+					slicePoint = hBox.localToScene(hBox.getBoundsInLocal()).getMinY();
+				} else {
+					slicePoint = minY;
+				}
+				break;
+			}
+		}
+		return slicePoint != 0d ? slicePoint
+				: firstCells.get(firstCells.size() - 1)
+						.localToScene(firstCells.get(firstCells.size() - 1).getBoundsInLocal()).getMinY();
 	}
 
 	private void showAlertMessage(AlertType type, String message) {

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="842.4" maxWidth="597.6" minHeight="842.4" minWidth="597.6" prefHeight="842.4" prefWidth="597.6" style="-fx-background-color: rgba(255,255,255,1);" stylesheets="@/styles/print.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="goran.rs.bg.grkreator.controller.PrintController">
+<AnchorPane maxWidth="597.6" minHeight="842.4" minWidth="597.6" prefWidth="597.6" style="-fx-background-color: rgba(255,255,255,1);" stylesheets="@/styles/print.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="goran.rs.bg.grkreator.controller.PrintController">
 	<children>
 		<VBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
@@ -458,26 +458,29 @@
                   </VBox>
                </children>
             </HBox>
+            <HBox>
+               <children>
+                  <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="line-border" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Račun primio" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="M. P." />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="210.0" layoutY="10.0" maxWidth="1.7976931348623157E308" styleClass="line-border" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Račun izdao" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets top="51.0" />
+               </padding>
+            </HBox>
 			</children>
 		</VBox>
-      <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-         <children>
-            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="line-border" HBox.hgrow="ALWAYS">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Račun primio" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="M. P." />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" layoutX="210.0" layoutY="10.0" maxWidth="1.7976931348623157E308" styleClass="line-border" HBox.hgrow="ALWAYS">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Račun izdao" />
-               </children>
-            </HBox>
-         </children>
-      </HBox>
 	</children>
 </AnchorPane>

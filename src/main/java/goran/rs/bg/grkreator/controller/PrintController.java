@@ -2,6 +2,7 @@ package goran.rs.bg.grkreator.controller;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -153,12 +154,17 @@ public class PrintController implements Initializable {
 
 	@FXML
 	private Text total;
-
+	
+	private ArrayList<HBox> rowFirstCells;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		rowFirstCells = new ArrayList<HBox>();
 		// GridPane header
 		String lineSeparator = System.lineSeparator();
-		gridTable.add(createCell("Rb.", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_FIRST), 0, 0);
+		HBox firstBox = createCell("Rb.", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_FIRST);
+		rowFirstCells.add(firstBox);
+		gridTable.add(firstBox, 0, 0);
 		gridTable.add(createCell("Naziv" + lineSeparator + "dobra/usluge", Pos.CENTER, TextAlignment.CENTER,
 				TableStyle.HEADER_MID), 1, 0);
 		gridTable.add(createCell("Jm.", Pos.CENTER, TextAlignment.CENTER, TableStyle.HEADER_MID), 2, 0);
@@ -298,16 +304,18 @@ public class PrintController implements Initializable {
 			ItemTable item = items.get(i);
 			if (i < items.size() - 2) {
 //				System.err.println("MID ROW");
+				HBox firstBox = createCell(item.getRowNo(), Pos.CENTER, TextAlignment.CENTER, TableStyle.MID_FIRST);
+				rowFirstCells.add(firstBox);
 				gridTable.addRow(i + 1,
-						createCell(item.getRowNo(), Pos.CENTER, TextAlignment.CENTER, TableStyle.MID_FIRST),
+						firstBox,
 						createCell(item.getName(), Pos.CENTER_LEFT, TextAlignment.LEFT, TableStyle.MID_MID),
 						createCell(item.getUnitOfMeasure(), Pos.CENTER, TextAlignment.CENTER, TableStyle.MID_MID),
-						createCell(item.getQuantityString(), Pos.CENTER_RIGHT, TextAlignment.RIGHT, TableStyle.MID_MID),
+						createCell(item.getQuantityString(), Pos.CENTER, TextAlignment.RIGHT, TableStyle.MID_MID),
 						createCell(String.format("%,.2f din.", item.getRealPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
 								TableStyle.MID_MID),
 						createCell(String.format("%,.2f din.", item.getSemiPrice()), Pos.CENTER_RIGHT,
 								TextAlignment.RIGHT, TableStyle.MID_MID),
-						createCell(String.format("%d%%", item.getPdv()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
+						createCell(String.format("%d%%", item.getPdv()), Pos.CENTER, TextAlignment.RIGHT,
 								TableStyle.MID_MID),
 						createCell(String.format("%,.2f din.", item.getPdvPrice()), Pos.CENTER_RIGHT,
 								TextAlignment.RIGHT, TableStyle.MID_MID),
@@ -315,16 +323,18 @@ public class PrintController implements Initializable {
 								TextAlignment.RIGHT, TableStyle.MID_LAST));
 			} else {
 //				System.err.println("BOT ROW");
+				HBox firstBox = createCell(item.getRowNo(), Pos.CENTER, TextAlignment.CENTER, TableStyle.BOT_FIRST);
+				rowFirstCells.add(firstBox);
 				gridTable.addRow(i + 1,
-						createCell(item.getRowNo(), Pos.CENTER, TextAlignment.CENTER, TableStyle.BOT_FIRST),
+						firstBox,
 						createCell(item.getName(), Pos.CENTER_LEFT, TextAlignment.LEFT, TableStyle.BOT_MID),
 						createCell(item.getUnitOfMeasure(), Pos.CENTER, TextAlignment.CENTER, TableStyle.BOT_MID),
-						createCell(item.getQuantityString(), Pos.CENTER_RIGHT, TextAlignment.RIGHT, TableStyle.BOT_MID),
+						createCell(item.getQuantityString(), Pos.CENTER, TextAlignment.RIGHT, TableStyle.BOT_MID),
 						createCell(String.format("%,.2f din.", item.getRealPrice()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
 								TableStyle.BOT_MID),
 						createCell(String.format("%,.2f din.", item.getSemiPrice()), Pos.CENTER_RIGHT,
 								TextAlignment.RIGHT, TableStyle.BOT_MID),
-						createCell(String.format("%d%%", item.getPdv()), Pos.CENTER_RIGHT, TextAlignment.RIGHT,
+						createCell(String.format("%d%%", item.getPdv()), Pos.CENTER, TextAlignment.RIGHT,
 								TableStyle.BOT_MID),
 						createCell(String.format("%,.2f din.", item.getPdvPrice()), Pos.CENTER_RIGHT,
 								TextAlignment.RIGHT, TableStyle.BOT_MID),
@@ -339,6 +349,10 @@ public class PrintController implements Initializable {
 		totalSemi.setText(semiPrice);
 		totalPdv.setText(pdvPrice);
 		total.setText(totalPrice);
+	}
+	
+	public ArrayList<HBox> getFirstCells() {
+		return rowFirstCells;
 	}
 
 }
