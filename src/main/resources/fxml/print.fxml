@@ -107,7 +107,7 @@
 											<children>
 												<Text text="PIB" />
 											</children>
-										</HBox>
+										</HBox> 
 										<HBox alignment="CENTER" minHeight="17.0" prefWidth="17.0" styleClass="pib-first">
 											<children>
 												<Text text="0" />
@@ -338,10 +338,7 @@
                   <GridPane fx:id="gridTable" alignment="CENTER" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -417,9 +414,9 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT">
+                        <HBox fx:id="totalHBox" alignment="CENTER_RIGHT">
                            <children>
-                              <HBox alignment="CENTER_RIGHT">
+                              <HBox fx:id="pdvHBox" alignment="CENTER_RIGHT">
                                  <HBox.margin>
                                     <Insets right="7.0" />
                                  </HBox.margin>

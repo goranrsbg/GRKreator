@@ -6,6 +6,7 @@ import java.util.function.UnaryOperator;
 
 import javax.persistence.EntityManager;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 
 import goran.rs.bg.grkreator.DB;
@@ -21,64 +22,70 @@ import javafx.stage.Window;
 
 public class DocumentController implements Initializable, PutItem {
 
-	@FXML
-	private JFXTextField titleTextField;
+    @FXML
+    private JFXTextField titleTextField;
 
-	@FXML
-	private JFXTextField documentNumberTextField;
+    @FXML
+    private JFXTextField documentNumberTextField;
 
-	@FXML
-	private JFXTextField documentSettlementTextField;
+    @FXML
+    private JFXTextField documentSettlementTextField;
 
-	private Document documentDetails;
+    @FXML
+    private JFXCheckBox inPdvCheckBox;
 
-	private Window window;
+    private Document documentDetails;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		Platform.runLater(() -> {
-			this.window = titleTextField.getScene().getWindow();
-		});
+    private Window window;
 
-		UnaryOperator<Change> filter = change -> {
-			if (change.getText().matches("\\d*")) {
-				return change;
-			}
-			return null;
-		};
-		documentNumberTextField.setTextFormatter(new TextFormatter<String>(filter));
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+	Platform.runLater(() -> {
+	    this.window = titleTextField.getScene().getWindow();
+	});
+
+	UnaryOperator<Change> filter = change -> {
+	    if (change.getText().matches("\\d*")) {
+		return change;
+	    }
+	    return null;
+	};
+	documentNumberTextField.setTextFormatter(new TextFormatter<String>(filter));
+    }
+
+    @FXML
+    void onCancelButtonAction(ActionEvent event) {
+	window.hide();
+    }
+
+    @FXML
+    void onSaveButtonAction(ActionEvent event) {
+	if (isValid()) {
+	    documentDetails.setTitle(titleTextField.getText());
+	    documentDetails.setValue(Integer.parseInt(documentNumberTextField.getText()));
+	    documentDetails.setSettlement(documentSettlementTextField.getText());
+	    documentDetails.setInPdv(inPdvCheckBox.isSelected());
+	    EntityManager em = DB.getNewEntityManager();
+	    em.getTransaction().begin();
+	    em.merge(documentDetails);
+	    em.getTransaction().commit();
+	    em.close();
 	}
+	window.hide();
+    }
 
-	@FXML
-	void onCancelButtonAction(ActionEvent event) {
-		window.hide();
-	}
+    private boolean isValid() {
+	return !titleTextField.getText().trim().isEmpty() && !documentNumberTextField.getText().trim().isEmpty()
+		&& !documentSettlementTextField.getText().trim().isEmpty();
+    }
 
-	@FXML
-	void onSaveButtonAction(ActionEvent event) {
-		if (isValid()) {
-			documentDetails.setTitle(titleTextField.getText());
-			documentDetails.setValue(Integer.parseInt(documentNumberTextField.getText()));
-			documentDetails.setSettlement(documentSettlementTextField.getText());
-			EntityManager em = DB.getNewEntityManager();
-			em.getTransaction().begin();
-			em.merge(documentDetails);
-			em.getTransaction().commit();
-			em.close();
-		}
-		window.hide();
-	}
-
-	private boolean isValid() {
-		return !titleTextField.getText().trim().isEmpty() && !documentNumberTextField.getText().trim().isEmpty()
-				&& !documentSettlementTextField.getText().trim().isEmpty();
-	}
-
-	public void putItem(Object item) {
-		this.documentDetails = (Document) item;
-		titleTextField.setText(documentDetails.getTitle());
-		documentNumberTextField.setText(Integer.toString(documentDetails.getValue()));
-		documentSettlementTextField.setText(documentDetails.getSettlement());
-	}
+    @Override
+    public void putItem(Object item) {
+	this.documentDetails = (Document) item;
+	titleTextField.setText(documentDetails.getTitle());
+	documentNumberTextField.setText(Integer.toString(documentDetails.getValue()));
+	documentSettlementTextField.setText(documentDetails.getSettlement());
+	inPdvCheckBox.setSelected(documentDetails.isInPdvSystem());
+    }
 
 }

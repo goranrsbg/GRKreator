@@ -209,7 +209,7 @@
                         <Insets right="11.0" top="11.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="594.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="SOMETIMES">
+                  <HBox fx:id="pdvHbox" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="594.0" maxWidth="1.7976931348623157E308" spacing="17.0" VBox.vgrow="SOMETIMES">
                      <children>
                         <Label styleClass="total-labels-text" text="Poreska Osnovica" />
                         <Label fx:id="labelPdvNumber" alignment="CENTER_RIGHT" prefWidth="211.0" styleClass="total-labels-text" text="Label" />
