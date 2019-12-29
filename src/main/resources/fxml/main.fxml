@@ -243,9 +243,9 @@
       </AnchorPane>
       <AnchorPane>
          <children>
-            <HBox fx:id="buyerBox" spacing="3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+            <SplitPane fx:id="buyerBox" dividerPositions="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <items>
+                  <VBox alignment="TOP_CENTER">
                      <children>
                         <HBox alignment="CENTER" spacing="11.0">
                            <children>
@@ -349,40 +349,36 @@
                         </GridPane>
                      </children>
                   </VBox>
-                  <VBox fx:id="searchBox" alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="searchBox" alignment="TOP_CENTER">
                      <children>
-                        <VBox spacing="3.0" VBox.vgrow="ALWAYS">
+                        <HBox>
                            <children>
-                              <HBox>
+                              <JFXTextField fx:id="searchTextField" labelFloat="true" promptText="Traži po imenu" styleClass="searchTextField" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets top="15.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                              <VBox alignment="BOTTOM_CENTER" spacing="2.0" HBox.hgrow="NEVER">
                                  <children>
-                                    <JFXTextField fx:id="searchTextField" labelFloat="true" promptText="Traži po imenu" styleClass="searchTextField" HBox.hgrow="ALWAYS">
-                                       <HBox.margin>
-                                          <Insets top="15.0" />
-                                       </HBox.margin>
-                                    </JFXTextField>
-                                    <VBox alignment="BOTTOM_CENTER" spacing="2.0" HBox.hgrow="NEVER">
-                                       <children>
-                                          <JFXButton buttonType="RAISED" contentDisplay="CENTER" maxHeight="17.0" maxWidth="17.0" minHeight="17.0" minWidth="17.0" onAction="#onSearchUpAction" prefHeight="17.0" prefWidth="17.0" text="" VBox.vgrow="NEVER">
-                                             <graphic>
-                                                <FontAwesomeIconView glyphName="CARET_UP" size="17.0" />
-                                             </graphic>
-                                          </JFXButton>
-                                          <JFXButton buttonType="RAISED" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="17.0" maxWidth="17.0" minHeight="17.0" minWidth="17.0" onAction="#onSearchDownAction" prefHeight="17.0" prefWidth="17.0" text="" VBox.vgrow="NEVER">
-                                             <graphic>
-                                                <FontAwesomeIconView glyphName="CARET_DOWN" size="17.0" />
-                                             </graphic>
-                                          </JFXButton>
-                                       </children>
-                                    </VBox>
+                                    <JFXButton buttonType="RAISED" contentDisplay="CENTER" maxHeight="17.0" maxWidth="17.0" minHeight="17.0" minWidth="17.0" onAction="#onSearchUpAction" prefHeight="17.0" prefWidth="17.0" text="" VBox.vgrow="NEVER">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="CARET_UP" size="17.0" />
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton buttonType="RAISED" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" maxHeight="17.0" maxWidth="17.0" minHeight="17.0" minWidth="17.0" onAction="#onSearchDownAction" prefHeight="17.0" prefWidth="17.0" text="" VBox.vgrow="NEVER">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="CARET_DOWN" size="17.0" />
+                                       </graphic>
+                                    </JFXButton>
                                  </children>
-                              </HBox>
-                              <ListView fx:id="searchListView" onKeyPressed="#onSearchListViewKeyPressed" onMouseClicked="#onSearchListViewMouseClicked" styleClass="searchListBox" VBox.vgrow="ALWAYS" />
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
+                        <ListView fx:id="searchListView" onKeyPressed="#onSearchListViewKeyPressed" onMouseClicked="#onSearchListViewMouseClicked" styleClass="searchListBox" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
-               </children>
-            </HBox>
+               </items>
+            </SplitPane>
          </children>
       </AnchorPane>
    </items>

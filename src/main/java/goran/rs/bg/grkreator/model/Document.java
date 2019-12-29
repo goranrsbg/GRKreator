@@ -22,8 +22,8 @@ public class Document {
     @Column(name = "DOCUMENT_SETTLEMENT", nullable = false)
     private String settlement;
 
-    @Column(name = "DOCUMENT_IN_PDV_SYSTEM", nullable = false)
-    private Boolean inPdv = true;
+    @Column(name = "DOCUMENT_IN_PDV_SYSTEM", nullable = false, columnDefinition = "boolean default true")
+    private Boolean inPdv;
 
     public Document() {
 

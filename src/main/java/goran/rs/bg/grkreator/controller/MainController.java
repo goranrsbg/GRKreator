@@ -58,6 +58,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TablePosition;
@@ -117,7 +118,7 @@ public class MainController implements Initializable {
     private ListView<Firm> searchListView;
 
     @FXML
-    private HBox buyerBox;
+    private SplitPane buyerBox;
 
     @FXML
     private Label labelTitle;
@@ -244,7 +245,7 @@ public class MainController implements Initializable {
 	em = DB.getNewEntityManager();
 	Platform.runLater(() -> {
 	    window = buyerLabel.getScene().getWindow();
-	    buyerBox.getChildren().remove(searchBox);
+	    buyerBox.getItems().remove(searchBox);
 	    searchFirmsService = new SearchFirmsService(searchListView.getItems(), searchTextField, searchTypeIndex,
 		    em);
 	});
@@ -465,12 +466,12 @@ public class MainController implements Initializable {
     @FXML
     void onSearchBuyerButtonAction(ActionEvent event) {
 	// toggle search view
-	if (buyerBox.getChildren().contains(searchBox)) {
-	    buyerBox.getChildren().remove(searchBox);
+	if (buyerBox.getItems().contains(searchBox)) {
+	    buyerBox.getItems().remove(searchBox);
 	    searchFirmsService.cancel();
 	    searchFirmsService.reset();
 	} else {
-	    buyerBox.getChildren().add(searchBox);
+	    buyerBox.getItems().add(searchBox);
 	    searchFirmsService.start();
 	}
     }

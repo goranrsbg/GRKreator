@@ -8,7 +8,7 @@
 - [x] Make it work.
 - [x] Make it useful.
 - [x] Make it look nice.
-- [x] Add optional vehicle details.
+- [ ] Add optional vehicle details.
 - [ ] Group same items inside table.
 
 :smirk:
