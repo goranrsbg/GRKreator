@@ -156,10 +156,19 @@ public class PrintController implements Initializable {
     private Text total;
 
     @FXML
-    private HBox totalHBox;
+    private VBox totalVBox;
+
+    @FXML
+    private VBox rightVBox;
 
     @FXML
     private HBox pdvHBox;
+
+    @FXML
+    private HBox pdvTextHBox;
+
+    @FXML
+    private Text firmNotInPdvSystem;
 
     private ArrayList<HBox> rowFirstCells;
     private Document document;
@@ -263,6 +272,9 @@ public class PrintController implements Initializable {
 	}
 	if (sellerFirm.IsDataForDisplay(FirmDetails.CAC)) {
 	    sellerChechingAccount.setText(sellerFirm.getCheckingAccount());
+	}
+	if (!document.isInPdvSystem()) {
+	    firmNotInPdvSystem.setText(sellerFirm.getName() + " nije u sistemu PDV-a.");
 	}
     }
 
@@ -387,8 +399,10 @@ public class PrintController implements Initializable {
 	totalSemi.setText(semiPrice);
 	if (document.isInPdvSystem()) {
 	    totalPdv.setText(pdvPrice);
+	    rightVBox.getChildren().remove(pdvTextHBox);
 	} else {
-	    totalHBox.getChildren().remove(pdvHBox);
+	    totalVBox.getChildren().remove(pdvHBox);
+
 	}
 	total.setText(totalPrice);
     }

@@ -80,7 +80,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>GRkreator</finalName>
+		<finalName>GRKreator</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -96,7 +96,7 @@
 				<version>8.8.3</version>
 				<configuration>
 					<vendor>goranrsbg</vendor>
-					<mainClass>goran.rs.bg.grkreator.GRkreator</mainClass>
+					<mainClass>goran.rs.bg.grkreator.GRKreator</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -23,7 +23,7 @@ public class Document {
     private String settlement;
 
     @Column(name = "DOCUMENT_IN_PDV_SYSTEM", nullable = false)
-    private Boolean inPdv;
+    private Boolean inPdv = true;
 
     public Document() {
 

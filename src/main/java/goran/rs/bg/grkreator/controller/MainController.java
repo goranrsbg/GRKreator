@@ -935,6 +935,11 @@ public class MainController implements Initializable {
 	    root.autosize();
 	    Scene scene = new Scene(root);
 	    Stage stage = new Stage();
+	    scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+		if (event.getCode() == KeyCode.ENTER) {
+		    stage.hide();
+		}
+	    });
 	    stage.setScene(scene);
 	    stage.setResizable(false);
 	    stage.showAndWait();

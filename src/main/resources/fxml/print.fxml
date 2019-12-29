@@ -353,7 +353,7 @@
 				</HBox>
             <HBox alignment="TOP_RIGHT">
                <children>
-                  <VBox alignment="BOTTOM_RIGHT" prefWidth="437.0" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="rightVBox" alignment="BOTTOM_RIGHT" prefWidth="437.0" HBox.hgrow="ALWAYS">
                      <children>
                         <VBox maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                            <children>
@@ -369,7 +369,22 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER_RIGHT" spacing="7.0">
+                        <HBox fx:id="pdvTextHBox" layoutX="10.0" layoutY="47.0" spacing="7.0">
+                           <children>
+                              <HBox alignment="TOP_RIGHT">
+                                 <children>
+                                    <Text fx:id="firmNotInPdvSystem" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="totals" />
+                                 </children>
+                                 <padding>
+                                    <Insets top="1.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="7.0" top="7.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="BOTTOM_LEFT" spacing="7.0">
                            <children>
                               <HBox alignment="TOP_RIGHT">
                                  <children>
@@ -391,7 +406,7 @@
                         <Insets right="11.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox spacing="3.0">
+                  <VBox fx:id="totalVBox" spacing="3.0">
                      <children>
                         <HBox alignment="CENTER_RIGHT">
                            <children>
@@ -414,9 +429,9 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <HBox fx:id="totalHBox" alignment="CENTER_RIGHT">
+                        <HBox fx:id="pdvHBox" alignment="CENTER_RIGHT">
                            <children>
-                              <HBox fx:id="pdvHBox" alignment="CENTER_RIGHT">
+                              <HBox alignment="CENTER_RIGHT">
                                  <HBox.margin>
                                     <Insets right="7.0" />
                                  </HBox.margin>
